@@ -24,15 +24,15 @@ public abstract class Packet {
     private static Packet getPacket(int id) {
         switch (id) {
             case 1:
-                return new LoginPacket();
+                return new Server1LoginPacket();
             case 2:
-                return new PairRequestPacket();
+                return new Server2PairRequestPacket();
             case 3:
-                return new PublicKeyPacket();
+                return new Server3PublicKeyPacket();
             case 4:
-                return new MessagePacket();
-            case 5:
-                return new DisconnectPacket();
+                return new Server4MessagePacket();
+            case 255:
+                return new Server255DisconnectPacket();
             default:
                 return null;
         }

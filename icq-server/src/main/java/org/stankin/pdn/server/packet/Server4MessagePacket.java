@@ -2,9 +2,9 @@ package org.stankin.pdn.server.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class PairRequestPacket extends Packet {
+public class Server4MessagePacket extends Packet {
 
-    private final int ID = 2;
+    private final int ID = 4;
 
     @Override
     public int getID() {

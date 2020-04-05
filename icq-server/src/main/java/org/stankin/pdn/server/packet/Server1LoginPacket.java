@@ -2,7 +2,7 @@ package org.stankin.pdn.server.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class LoginPacket extends Packet {
+public class Server1LoginPacket extends Packet {
 
     private final int ID = 1;
     private String login;
@@ -25,7 +25,7 @@ public class LoginPacket extends Packet {
         password = builder.toString();
     }
 
-    public void send(ChannelBuffer buffer) { //TODO: Заполнить отправку клиентом. Пакеты зеркальные для клиента и сервера
+    public void send(ChannelBuffer buffer) {
         // Тело отправки пустое, т.к. сервер не посылает этот пакет
     }
 

@@ -2,7 +2,7 @@ package org.stankin.pdn.server.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class PublicKeyPacket extends Packet {
+public class Server3PublicKeyPacket extends Packet {
 
     private final int ID = 3;
 
