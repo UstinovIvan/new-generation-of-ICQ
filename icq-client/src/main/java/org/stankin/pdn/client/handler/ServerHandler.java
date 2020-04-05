@@ -10,6 +10,7 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         super.channelConnected(ctx, e);
 
         System.out.println("channel connected");
+
     }
 
     @Override
@@ -22,6 +23,9 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         super.exceptionCaught(ctx, e);
+
+        System.out.println(e.getCause().toString());
+        ctx.getChannel().close();
         System.out.println("exception");
     }
 

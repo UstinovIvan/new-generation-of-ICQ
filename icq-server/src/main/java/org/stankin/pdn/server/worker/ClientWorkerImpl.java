@@ -9,6 +9,8 @@ public class ClientWorkerImpl implements ClientWorker {
     private SimpleChannelUpstreamHandler handler;
     private Channel channel;
 
+    private String login;
+
     public ClientWorkerImpl(SimpleChannelUpstreamHandler handler, Channel channel) {
         this.handler = handler;
         this.channel = channel;
