@@ -6,7 +6,7 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
 import org.jboss.netty.handler.codec.replay.VoidEnum;
-import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.client.packet.ClientPacket;
 
 public class PacketFrameDecoder extends ReplayingDecoder<VoidEnum> {
 
@@ -21,6 +21,6 @@ public class PacketFrameDecoder extends ReplayingDecoder<VoidEnum> {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer, VoidEnum state) throws Exception {
-        return Packet.read(buffer);
+        return ClientPacket.read(buffer);
     }
 }

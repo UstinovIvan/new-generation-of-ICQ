@@ -1,13 +1,12 @@
 package org.stankin.pdn.client;
 
 import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.channel.ChannelFactory;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.execution.OrderedMemoryAwareThreadPoolExecutor;
+import org.stankin.pdn.client.packet.Client1LoginPacket;
+import org.stankin.pdn.client.packet.ClientPacket;
 import org.stankin.pdn.client.pipeline.ClientPipelineFactory;
-import org.stankin.pdn.server.packet.LoginPacket;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -45,7 +44,10 @@ public class ClientApp {
 
         if (channel.awaitUninterruptibly().getChannel().isOpen()) {
             System.out.println("Отправляем логин-пакет");
-            channel.getChannel().write(new LoginPacket()).awaitUninterruptibly();
+            ClientPacket packet = new Client1LoginPacket("bulba", "123");
+            channel.getChannel().write(packet);
+
+            channel.awaitUninterruptibly();
         }
 
 
