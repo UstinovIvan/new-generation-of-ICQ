@@ -27,10 +27,10 @@ public abstract class Packet {
                 return new Server1LoginPacket();
             case 2:
                 return new Server2PairRequestPacket();
+            case 20:
+                return new Server2ClientList();
             case 3:
                 return new Server3PublicKeyPacket();
-            case 30:
-                return new Server3UsersList();
             case 4:
                 return new Server4MessagePacket();
             case 255:

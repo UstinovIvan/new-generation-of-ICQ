@@ -37,7 +37,7 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
             context.getClientList().add(client);
             sendSuccess();
 
-            handler.setClientWorker(new PairClientWorker(this.handler, this.channel, client));
+            handler.setClientWorker(new ClientListWorker(this.handler, this.channel, client));
         }
     }
 

@@ -32,10 +32,10 @@ public abstract class ClientPacket {
                 return new Client1LoginFailed();
             case 2:
                 return new Client2PairRequestPacket();
+            case 20:
+                return new Client2ClientList();
             case 3:
                 return new Client3PublicKeyPacket();
-            case 30:
-                return new Client3UsersList();
             case 4:
                 return new Client4MessagePacket();
             case 255:

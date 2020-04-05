@@ -7,10 +7,14 @@ import org.stankin.pdn.client.packet.ClientPacket;
 
 import org.jboss.netty.channel.Channel;
 
+import java.util.List;
+
 public class ServerWorkerImpl implements ServerWorker {
 
     private ServerHandler handler;
     private Channel channel;
+
+    private List<String> clientList;
 
     private boolean authorities = false;
 
@@ -29,6 +33,11 @@ public class ServerWorkerImpl implements ServerWorker {
         System.out.println("Получен пакет с ID = " + packet.getID());
 
         if (authorities) {
+            if (packet.getID() == 20) {
+                clientList = ((Client2ClientList) packet).getClientList();
+
+            }
+
 
         } else {
             checkAuthorization(packet);
