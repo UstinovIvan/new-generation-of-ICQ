@@ -2,8 +2,8 @@ package org.stankin.pdn.server.handler;
 
 import org.jboss.netty.channel.*;
 import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.server.worker.AuthorizationClientWorker;
 import org.stankin.pdn.server.worker.ClientWorker;
-import org.stankin.pdn.server.worker.ClientWorkerImpl;
 
 public class ClientHandler extends SimpleChannelUpstreamHandler {
 
@@ -13,7 +13,14 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelConnected(ctx, e);
 
-        clientWorker = new ClientWorkerImpl(this, e.getChannel());
+        /*
+          Реализовать следующую логику:
+          При создании канала инициализируем воркера-авторизатора, который получает пакет авторизации и делает дела
+          Успех - присваивает следующего. Неудача - остается бдеть.
+          И так идем по жизненному циклу пользователя в системе
+         */
+        clientWorker = new AuthorizationClientWorker(this, e.getChannel());
+
         System.out.println("channel connected");
     }
 
@@ -40,5 +47,13 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 
         clientWorker.disconnectedFromChannel();
         System.out.println("channel disconnected");
+    }
+
+    public ClientWorker getClientWorker() {
+        return clientWorker;
+    }
+
+    public void setClientWorker(ClientWorker clientWorker) {
+        this.clientWorker = clientWorker;
     }
 }
