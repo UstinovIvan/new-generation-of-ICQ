@@ -1,12 +1,12 @@
 package org.stankin.pdn.client;
 
 import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.execution.OrderedMemoryAwareThreadPoolExecutor;
-import org.stankin.pdn.client.packet.Client1LoginPacket;
-import org.stankin.pdn.client.packet.ClientPacket;
 import org.stankin.pdn.client.pipeline.ClientPipelineFactory;
+import org.stankin.pdn.client.ui.MainWindow;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -14,6 +14,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ClientApp {
+
+    private String address;
+    private int port;
+
+    private ClientApp(String address, int port) {
+        this.address = address;
+        this.port = port;
+    }
+
     public static void main(String[] args) {
 
         String address;
@@ -27,6 +36,11 @@ public class ClientApp {
             return;
         }
 
+        new MainWindow(new ClientApp(address, port));
+
+    }
+
+    public void startClient(MainWindow mainWindow) {
         SocketAddress socketAddress = new InetSocketAddress(address, port);
 
         ExecutorService bossExec = new OrderedMemoryAwareThreadPoolExecutor(1, 400000000, 2000000000, 60, TimeUnit.SECONDS);
@@ -38,20 +52,10 @@ public class ClientApp {
         clientBootstrap.setOption("tcpNoDelay", true);
         clientBootstrap.setOption("keepAlive", true);
         clientBootstrap.setOption("receiveBufferSize", 1048576);
-        clientBootstrap.setPipelineFactory(new ClientPipelineFactory());
+        clientBootstrap.setPipelineFactory(new ClientPipelineFactory(mainWindow));
 
         ChannelFuture channel = clientBootstrap.connect(socketAddress).awaitUninterruptibly();
 
-        if (channel.awaitUninterruptibly().getChannel().isOpen()) {
-            System.out.println("Отправляем логин-пакет");
-            ClientPacket packet = new Client1LoginPacket("bulba", "123");
-            channel.getChannel().write(packet);
-
-            channel.awaitUninterruptibly();
-        }
-
-
         System.out.println("Клиент запущен");
-
     }
 }

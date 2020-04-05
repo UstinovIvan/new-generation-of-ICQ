@@ -1,22 +1,37 @@
 package org.stankin.pdn.client.handler;
 
 import org.jboss.netty.channel.*;
+import org.stankin.pdn.client.packet.ClientPacket;
+import org.stankin.pdn.client.ui.MainWindow;
+import org.stankin.pdn.client.worker.ServerWorker;
+import org.stankin.pdn.client.worker.ServerWorkerImpl;
 
 public class ServerHandler extends SimpleChannelUpstreamHandler {
 
+    private ServerWorker worker;
+
+    private MainWindow ui;
+
+    public ServerHandler(MainWindow ui) {
+        this.ui = ui;
+    }
 
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelConnected(ctx, e);
 
         System.out.println("channel connected");
+        worker = new ServerWorkerImpl(this, e.getChannel());
 
+        ui.showLoginPage();
+        ui.setWorker(worker);
     }
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         super.messageReceived(ctx, e);
 
+        worker.acceptPacket((ClientPacket)e.getMessage());
         System.out.println("message from server recieved");
     }
 
@@ -24,8 +39,7 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         super.exceptionCaught(ctx, e);
 
-        System.out.println(e.getCause().toString());
-        ctx.getChannel().close();
+        ui.showError(e.getCause().getMessage());
         System.out.println("exception");
     }
 
@@ -34,5 +48,9 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         super.channelDisconnected(ctx, e);
 
         System.out.println("channel disconnected");
+    }
+
+    public MainWindow getUi() {
+        return this.ui;
     }
 }

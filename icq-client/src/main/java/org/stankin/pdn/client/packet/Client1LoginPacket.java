@@ -20,10 +20,10 @@ public class Client1LoginPacket extends ClientPacket {
 
     }
 
-    public void send(ChannelBuffer buffer) { //TODO: Заполнить отправку клиентом. Пакеты зеркальные для клиента и сервера
+    public void send(ChannelBuffer buffer) {
         int loginLength = login.length();
         int passwordLength = password.length();
-
+        
         buffer.writeShort(loginLength);
         for (int i = 0; i < loginLength; i++) {
             buffer.writeChar(login.charAt(i));

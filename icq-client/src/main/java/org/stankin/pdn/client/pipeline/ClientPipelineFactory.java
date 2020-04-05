@@ -6,8 +6,15 @@ import org.jboss.netty.channel.Channels;
 import org.stankin.pdn.client.coder.PacketFrameDecoder;
 import org.stankin.pdn.client.coder.PacketFrameEncoder;
 import org.stankin.pdn.client.handler.ServerHandler;
+import org.stankin.pdn.client.ui.MainWindow;
 
 public class ClientPipelineFactory implements ChannelPipelineFactory {
+
+    private MainWindow ui;
+
+    public ClientPipelineFactory(MainWindow ui) {
+        this.ui = ui;
+    }
 
     @Override
     public ChannelPipeline getPipeline() {
@@ -17,7 +24,7 @@ public class ClientPipelineFactory implements ChannelPipelineFactory {
         ChannelPipeline p = Channels.pipeline();
         p.addLast("encoder", encoder);
         p.addLast("decoder", decoder);
-        p.addLast("logic",   new ServerHandler());
+        p.addLast("logic",   new ServerHandler(ui));
         return p;
     }
 }

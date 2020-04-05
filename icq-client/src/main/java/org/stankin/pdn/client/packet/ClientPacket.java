@@ -26,6 +26,10 @@ public abstract class ClientPacket {
         switch (id) {
             case 1:
                 return new Client1LoginPacket();
+            case 11:
+                return new Client1LoginSuccess();
+            case 12:
+                return new Client1LoginFailed();
             case 2:
                 return new Client2PairRequestPacket();
             case 3:
