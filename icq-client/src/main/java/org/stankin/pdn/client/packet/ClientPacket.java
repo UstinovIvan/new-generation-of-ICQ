@@ -4,6 +4,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 import java.io.IOException;
 
+//TODO: Вынести пакеты в отдельный модуль
 public abstract class ClientPacket {
 
     public static ClientPacket read(ChannelBuffer buffer) throws IOException {
@@ -29,6 +30,8 @@ public abstract class ClientPacket {
                 return new Client2PairRequestPacket();
             case 3:
                 return new Client3PublicKeyPacket();
+            case 30:
+                return new Client3UsersList();
             case 4:
                 return new Client4MessagePacket();
             case 255:
