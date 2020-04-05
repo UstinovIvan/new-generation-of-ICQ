@@ -31,7 +31,7 @@ public abstract class ClientPacket {
                 return new Client3PublicKeyPacket();
             case 4:
                 return new Client4MessagePacket();
-            case 5:
+            case 255:
                 return new Client255DisconnectPacket();
             default:
                 return null;

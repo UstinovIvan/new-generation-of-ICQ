@@ -4,7 +4,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 public class Client255DisconnectPacket extends ClientPacket {
 
-    private final int ID = 5;
+    private final int ID = 255;
 
     @Override
     public int getID() {
