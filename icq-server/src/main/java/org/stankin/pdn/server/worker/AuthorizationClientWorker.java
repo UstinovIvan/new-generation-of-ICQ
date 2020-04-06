@@ -35,6 +35,7 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
             sendFailure("User is already online");
         } else {
             context.getClientList().add(client);
+            context.getClientNames().add(client.getName());
             sendSuccess();
 
             handler.setClientWorker(new ClientListWorker(this.handler, this.channel, client));

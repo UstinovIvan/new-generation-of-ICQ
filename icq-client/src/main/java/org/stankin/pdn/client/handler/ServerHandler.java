@@ -47,6 +47,7 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelDisconnected(ctx, e);
 
+        worker.disconnectedFromChannel();
         System.out.println("channel disconnected");
     }
 

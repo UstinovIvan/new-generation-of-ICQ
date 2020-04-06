@@ -14,7 +14,7 @@ public class ClientListWorker extends AbstractClientWorker {
 
     private Client client;
 
-    public ClientListWorker(ClientHandler handler, Channel channel, Client client) {
+    ClientListWorker(ClientHandler handler, Channel channel, Client client) {
         super(handler, channel);
         this.client = client;
     }
@@ -28,10 +28,8 @@ public class ClientListWorker extends AbstractClientWorker {
     public void acceptPacket(Packet packet) {
         Server2ClientList clientListPacket = (Server2ClientList) packet;
 
-        List<String> usersList = new ArrayList<>();
-        ServerContext.getInstance().getClientList().forEach(client -> {
-            usersList.add(client.getName());
-        });
+        List<String> usersList = new ArrayList<>(ServerContext.getInstance().getClientNames());
+
         usersList.remove(client.getName());
         clientListPacket.setUsersList(usersList);
 
