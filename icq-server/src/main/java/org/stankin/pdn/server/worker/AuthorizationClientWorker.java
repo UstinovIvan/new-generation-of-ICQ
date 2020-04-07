@@ -9,6 +9,8 @@ import org.stankin.pdn.server.packet.Server1LoginFailed;
 import org.stankin.pdn.server.packet.Server1LoginPacket;
 import org.stankin.pdn.server.packet.Server1LoginSuccess;
 
+import java.util.UUID;
+
 public class AuthorizationClientWorker extends AbstractClientWorker {
 
     public AuthorizationClientWorker(ClientHandler handler, Channel channel) {
@@ -31,12 +33,13 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
         client.setName(loginPacket.getLogin());
         client.setAddress(this.channel.getRemoteAddress());
 
-        if (context.getClientList().contains(client)) {//TODO: Заглушка. Реализовать проверку пользователя по базе
+        String uid = UUID.nameUUIDFromBytes(client.getName().getBytes()).toString();
+        if (context.getClientList().containsKey(uid)) {//TODO: Заглушка. Реализовать проверку пользователя по базе
             sendFailure("User is already online");
         } else {
-            context.getClientList().add(client);
+            context.getClientList().put(uid, client);
             context.getClientNames().add(client.getName());
-            sendSuccess();
+            sendSuccess(uid);
 
             handler.setClientWorker(new ClientListWorker(this.handler, this.channel, client));
         }
@@ -47,8 +50,8 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
         this.channel.write(failurePacket);
     }
 
-    private void sendSuccess() {
-        Packet successPacket = new Server1LoginSuccess();
+    private void sendSuccess(String uid) {
+        Packet successPacket = new Server1LoginSuccess().withUid(uid);
         this.channel.write(successPacket);
     }
 }
