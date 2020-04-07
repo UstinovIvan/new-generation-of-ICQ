@@ -2,9 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Client255DisconnectPacket extends ClientPacket {
+public class Packet3PublicKey extends Packet {
 
-    private final int ID = 255;
+    private final int ID = 3;
 
     @Override
     public int getID() {

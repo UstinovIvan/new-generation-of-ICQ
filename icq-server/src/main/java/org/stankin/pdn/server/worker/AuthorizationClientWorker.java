@@ -4,10 +4,10 @@ import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.server.context.ServerContext;
 import org.stankin.pdn.server.handler.ClientHandler;
 import org.stankin.pdn.server.model.Client;
-import org.stankin.pdn.server.packet.Packet;
-import org.stankin.pdn.server.packet.Server1LoginFailed;
-import org.stankin.pdn.server.packet.Server1LoginPacket;
-import org.stankin.pdn.server.packet.Server1LoginSuccess;
+import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet1LoginFailed;
+import org.stankin.pdn.client.packet.Packet1LoginRequest;
+import org.stankin.pdn.client.packet.Packet1LoginSuccess;
 
 import java.util.UUID;
 
@@ -27,7 +27,7 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
 
         ServerContext context = ServerContext.getInstance();
 
-        Server1LoginPacket loginPacket = (Server1LoginPacket) packet;
+        Packet1LoginRequest loginPacket = (Packet1LoginRequest) packet;
 
         Client client = new Client();
         client.setName(loginPacket.getLogin());
@@ -46,12 +46,12 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
     }
 
     private void sendFailure(String reason) {
-        Packet failurePacket = new Server1LoginFailed(reason);
+        Packet failurePacket = new Packet1LoginFailed().withReason(reason);
         this.channel.write(failurePacket);
     }
 
     private void sendSuccess(String uid) {
-        Packet successPacket = new Server1LoginSuccess().withUid(uid);
+        Packet successPacket = new Packet1LoginSuccess().withUid(uid);
         this.channel.write(successPacket);
     }
 }

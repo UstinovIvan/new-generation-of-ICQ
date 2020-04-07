@@ -1,15 +1,12 @@
 package org.stankin.pdn.client.ui;
 
-import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.ClientApp;
-import org.stankin.pdn.client.packet.Client1LoginPacket;
-import org.stankin.pdn.client.packet.ClientPacket;
+import org.stankin.pdn.client.packet.Packet1LoginRequest;
+import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.worker.ServerWorker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
 
@@ -89,7 +86,7 @@ public class MainWindow extends JFrame {
 
         jbSend.addActionListener(e -> {
             if (!jtfLogin.getText().trim().isEmpty() && !jtfPassword.getText().trim().isEmpty()) {
-                ClientPacket loginPacket = new Client1LoginPacket(jtfLogin.getText(), jtfPassword.getText());
+                Packet loginPacket = new Packet1LoginRequest(jtfLogin.getText(), jtfPassword.getText());
                 worker.sendPacket(loginPacket);
             }
             System.out.println("Send Click");

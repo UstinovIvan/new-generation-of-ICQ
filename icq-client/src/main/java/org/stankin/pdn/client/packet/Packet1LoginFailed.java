@@ -2,7 +2,7 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Client1LoginFailed extends ClientPacket {
+public class Packet1LoginFailed extends Packet {
 
     private final int ID = 12;
 
@@ -21,7 +21,12 @@ public class Client1LoginFailed extends ClientPacket {
 
     @Override
     public void send(ChannelBuffer buffer) {
+        int reasonLength = reason.length();
 
+        buffer.writeShort(reasonLength);
+        for (int i = 0; i < reasonLength; i++) {
+            buffer.writeChar(reason.charAt(i));
+        }
     }
 
     @Override
@@ -31,5 +36,14 @@ public class Client1LoginFailed extends ClientPacket {
 
     public String getReason() {
         return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Packet1LoginFailed withReason(String reason) {
+        this.reason = reason;
+        return this;
     }
 }

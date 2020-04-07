@@ -1,18 +1,30 @@
-package org.stankin.pdn.server.packet;
+package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Server2ClientList extends Packet {
+public class Packet2UsersListResponse extends Packet {
 
-    private final int ID = 20;
+    private final int ID = 21;
 
     private List<String> usersList;
 
     @Override
     public void get(ChannelBuffer buffer) {
-
+        int usersCount = buffer.readShort();
+        usersList = new ArrayList<>(usersCount);
+        StringBuilder builder;
+        while (usersCount != 0) {
+            int length = buffer.readShort();
+            builder = new StringBuilder();
+            for (int i = 0; i < length; i ++) {
+                builder.append(buffer.readChar());
+            }
+            usersList.add(builder.toString());
+            usersCount--;
+        }
     }
 
     @Override
@@ -37,5 +49,10 @@ public class Server2ClientList extends Packet {
 
     public void setUsersList(List<String> usersList) {
         this.usersList = usersList;
+    }
+
+    public Packet2UsersListResponse withUsersList(List<String> usersList) {
+        this.usersList = usersList;
+        return this;
     }
 }

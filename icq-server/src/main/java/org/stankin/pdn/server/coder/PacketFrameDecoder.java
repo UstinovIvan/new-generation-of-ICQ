@@ -6,7 +6,7 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
 import org.jboss.netty.handler.codec.replay.VoidEnum;
-import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.client.packet.Packet;
 
 public class PacketFrameDecoder extends ReplayingDecoder<VoidEnum> {
 

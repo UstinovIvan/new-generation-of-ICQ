@@ -1,7 +1,7 @@
 package org.stankin.pdn.client.handler;
 
 import org.jboss.netty.channel.*;
-import org.stankin.pdn.client.packet.ClientPacket;
+import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.ui.MainWindow;
 import org.stankin.pdn.client.worker.ServerWorker;
 import org.stankin.pdn.client.worker.ServerWorkerImpl;
@@ -31,7 +31,7 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         super.messageReceived(ctx, e);
 
-        worker.acceptPacket((ClientPacket)e.getMessage());
+        worker.acceptPacket((Packet)e.getMessage());
         System.out.println("message from server recieved");
     }
 

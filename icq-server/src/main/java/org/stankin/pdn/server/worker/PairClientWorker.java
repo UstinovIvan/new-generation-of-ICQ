@@ -3,7 +3,7 @@ package org.stankin.pdn.server.worker;
 import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.server.handler.ClientHandler;
 import org.stankin.pdn.server.model.Client;
-import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.client.packet.Packet;
 
 public class PairClientWorker extends AbstractClientWorker {
 

@@ -1,7 +1,7 @@
 package org.stankin.pdn.server.handler;
 
 import org.jboss.netty.channel.*;
-import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.server.worker.AuthorizationClientWorker;
 import org.stankin.pdn.server.worker.ClientWorker;
 

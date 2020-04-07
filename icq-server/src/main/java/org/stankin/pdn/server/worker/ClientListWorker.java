@@ -4,8 +4,8 @@ import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.server.context.ServerContext;
 import org.stankin.pdn.server.handler.ClientHandler;
 import org.stankin.pdn.server.model.Client;
-import org.stankin.pdn.server.packet.Packet;
-import org.stankin.pdn.server.packet.Server2ClientList;
+import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet2UsersListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ClientListWorker extends AbstractClientWorker {
 
     @Override
     public void acceptPacket(Packet packet) {
-        Server2ClientList clientListPacket = (Server2ClientList) packet;
+        Packet2UsersListResponse clientListPacket = new Packet2UsersListResponse();
 
         List<String> usersList = new ArrayList<>(ServerContext.getInstance().getClientNames());
 

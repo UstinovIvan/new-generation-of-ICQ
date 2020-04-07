@@ -21,6 +21,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.stankin.pdn</groupId>
+            <artifactId>icq-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

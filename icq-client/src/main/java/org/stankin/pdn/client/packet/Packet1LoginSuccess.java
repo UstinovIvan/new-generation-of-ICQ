@@ -1,8 +1,8 @@
-package org.stankin.pdn.server.packet;
+package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Server1LoginSuccess extends Packet {
+public class Packet1LoginSuccess extends Packet {
 
     private final int ID = 11;
 
@@ -10,7 +10,15 @@ public class Server1LoginSuccess extends Packet {
 
     @Override
     public void get(ChannelBuffer buffer) {
+        int length = buffer.readShort();
 
+        StringBuilder stringBuilder = new StringBuilder();
+        while (length != 0) {
+            stringBuilder.append(buffer.readChar());
+            length--;
+        }
+        uid = stringBuilder.toString();
+        System.out.println("Get uid = " + uid);
     }
 
     @Override
@@ -30,7 +38,15 @@ public class Server1LoginSuccess extends Packet {
         return this.ID;
     }
 
-    public Packet withUid(String uid) {
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public Packet1LoginSuccess withUid(String uid) {
         this.uid = uid;
         return this;
     }

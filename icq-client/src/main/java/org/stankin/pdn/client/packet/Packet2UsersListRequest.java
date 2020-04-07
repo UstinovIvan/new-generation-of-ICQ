@@ -2,9 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Client3UsersList extends ClientPacket {
+public class Packet2UsersListRequest extends Packet {
 
-    private final int ID = 30;
+    private final int ID = 20;
 
     @Override
     public void get(ChannelBuffer buffer) {

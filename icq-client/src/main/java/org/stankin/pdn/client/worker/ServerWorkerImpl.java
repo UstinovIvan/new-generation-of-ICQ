@@ -1,9 +1,10 @@
 package org.stankin.pdn.client.worker;
 
 import org.stankin.pdn.client.handler.ServerHandler;
-import org.stankin.pdn.client.packet.Client1LoginFailed;
-import org.stankin.pdn.client.packet.Client2ClientList;
-import org.stankin.pdn.client.packet.ClientPacket;
+import org.stankin.pdn.client.packet.Packet1LoginFailed;
+import org.stankin.pdn.client.packet.Packet2UsersListRequest;
+import org.stankin.pdn.client.packet.Packet2UsersListResponse;
+import org.stankin.pdn.client.packet.Packet;
 
 import org.jboss.netty.channel.Channel;
 
@@ -15,6 +16,8 @@ public class ServerWorkerImpl implements ServerWorker {
     private Channel channel;
 
     private List<String> clientList;
+
+    private List<String> activeClientList;
 
     private boolean authorities = false;
 
@@ -29,14 +32,15 @@ public class ServerWorkerImpl implements ServerWorker {
     }
 
     @Override
-    public void acceptPacket(ClientPacket packet) {
+    public void acceptPacket(Packet packet) {
         System.out.println("Получен пакет с ID = " + packet.getID());
 
         if (authorities) {
             if (packet.getID() == 20) {
-                clientList = ((Client2ClientList) packet).getClientList();
-
+                clientList = ((Packet2UsersListResponse) packet).getUsersList();
             }
+
+
 
 
         } else {
@@ -46,18 +50,18 @@ public class ServerWorkerImpl implements ServerWorker {
     }
 
     @Override
-    public void sendPacket(ClientPacket packet) {
+    public void sendPacket(Packet packet) {
         channel.write(packet);
     }
 
-    private void checkAuthorization(ClientPacket packet) {
+    private void checkAuthorization(Packet packet) {
         if (packet.getID() == 11) {
             authorities = true;
 
-            ClientPacket clientListPacket = new Client2ClientList();
+            Packet clientListPacket = new Packet2UsersListRequest();
             channel.write(clientListPacket);
         } else if (packet.getID() == 12) {
-            handler.getUi().showError(((Client1LoginFailed) packet).getReason());
+            handler.getUi().showError(((Packet1LoginFailed) packet).getReason());
         }
     }
 }

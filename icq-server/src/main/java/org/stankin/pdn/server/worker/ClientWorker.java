@@ -1,6 +1,6 @@
 package org.stankin.pdn.server.worker;
 
-import org.stankin.pdn.server.packet.Packet;
+import org.stankin.pdn.client.packet.Packet;
 
 public interface ClientWorker {
 

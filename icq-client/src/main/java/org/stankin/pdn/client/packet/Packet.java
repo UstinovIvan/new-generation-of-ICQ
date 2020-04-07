@@ -1,4 +1,4 @@
-package org.stankin.pdn.server.packet;
+package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
@@ -21,20 +21,26 @@ public abstract class Packet {
         packet.send(buffer); // Отправляем данные пакета
     }
 
-    private static Packet getPacket(int id) {
+    private static Packet getPacket(int id) {//TODO: Использовать другой механизм
         switch (id) {
             case 1:
-                return new Server1LoginPacket();
+                return new Packet1LoginRequest();
+            case 11:
+                return new Packet1LoginSuccess();
+            case 12:
+                return new Packet1LoginFailed();
             case 2:
-                return new Server2PairRequestPacket();
+                return new Packet2PairRequest();
             case 20:
-                return new Server2ClientList();
+                return new Packet2UsersListRequest();
+            case 21:
+                return new Packet2UsersListResponse();
             case 3:
-                return new Server3PublicKeyPacket();
+                return new Packet3PublicKey();
             case 4:
-                return new Server4MessagePacket();
+                return new Packet4Message();
             case 255:
-                return new Server255DisconnectPacket();
+                return new Packet255Disconnect();
             default:
                 return null;
         }

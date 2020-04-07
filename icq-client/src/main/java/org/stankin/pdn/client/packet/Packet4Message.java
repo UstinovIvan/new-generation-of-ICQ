@@ -1,10 +1,10 @@
-package org.stankin.pdn.server.packet;
+package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Server3PublicKeyPacket extends Packet {
+public class Packet4Message extends Packet {
 
-    private final int ID = 3;
+    private final int ID = 4;
 
     @Override
     public int getID() {

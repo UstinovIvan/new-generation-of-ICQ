@@ -1,12 +1,12 @@
 package org.stankin.pdn.client.worker;
 
-import org.stankin.pdn.client.packet.ClientPacket;
+import org.stankin.pdn.client.packet.Packet;
 
 public interface ServerWorker {
 
     void disconnectedFromChannel();
 
-    void acceptPacket(ClientPacket packet);
+    void acceptPacket(Packet packet);
 
-    void sendPacket(ClientPacket packet);
+    void sendPacket(Packet packet);
 }
