@@ -40,4 +40,10 @@ public class ServerContext {
 
         return null;
     }
+
+    public void removeClient(Client client) {
+        this.clientNames.remove(client.getName());
+        this.clientList.values().remove(client);
+        System.out.println(clientList.size());
+    }
 }
