@@ -1,10 +1,10 @@
 package org.stankin.pdn.server.model;
 
 import com.google.common.base.Objects;
+import org.stankin.pdn.server.handler.ClientHandler;
 
 import java.net.SocketAddress;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Client {
@@ -12,6 +12,7 @@ public class Client {
     private String name;
     private SocketAddress address;
     private Map<String, SocketAddress> connectionList;
+    private ClientHandler handler;
 
     public String getName() {
         return name;
@@ -38,6 +39,14 @@ public class Client {
 
     public void setConnectionList(Map<String, SocketAddress> connectionList) {
         this.connectionList = connectionList;
+    }
+
+    public ClientHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(ClientHandler handler) {
+        this.handler = handler;
     }
 
     //TODO: Обдумать возможность сверять только по адресу, чтобы исключить возможность двух входов с одного адреса

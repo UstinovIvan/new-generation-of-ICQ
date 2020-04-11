@@ -35,23 +35,14 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
 
         String uid = UUID.nameUUIDFromBytes(client.getName().getBytes()).toString();
         if (context.getClientList().containsKey(uid)) {//TODO: Заглушка. Реализовать проверку пользователя по базе
-            sendFailure("User is already online");
+            sendPacket(new Packet1LoginFailed().withReason("User is already online"));
         } else {
+            client.setHandler(this.handler);
             context.getClientList().put(uid, client);
             context.getClientNames().add(client.getName());
-            sendSuccess(uid);
+            sendPacket(new Packet1LoginSuccess().withUid(uid));
 
             handler.setClientWorker(new ClientListWorker(this.handler, this.channel, client));
         }
-    }
-
-    private void sendFailure(String reason) {
-        Packet failurePacket = new Packet1LoginFailed().withReason(reason);
-        this.channel.write(failurePacket);
-    }
-
-    private void sendSuccess(String uid) {
-        Packet successPacket = new Packet1LoginSuccess().withUid(uid);
-        this.channel.write(successPacket);
     }
 }

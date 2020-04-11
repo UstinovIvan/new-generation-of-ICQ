@@ -1,6 +1,7 @@
 package org.stankin.pdn.server.worker;
 
 import org.jboss.netty.channel.Channel;
+import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.server.handler.ClientHandler;
 
 public abstract class AbstractClientWorker implements ClientWorker{
@@ -13,11 +14,8 @@ public abstract class AbstractClientWorker implements ClientWorker{
         this.channel = channel;
     }
 
-    public ClientHandler getHandler() {
-        return handler;
-    }
-
-    public Channel getChannel() {
-        return channel;
+    @Override
+    public void sendPacket(Packet packet) {
+        this.channel.write(packet);
     }
 }

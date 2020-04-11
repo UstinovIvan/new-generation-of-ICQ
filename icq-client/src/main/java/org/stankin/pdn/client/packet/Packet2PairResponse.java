@@ -40,6 +40,8 @@ public class Packet2PairResponse extends Packet {
             }
 
             this.username = builder.toString();
+            System.out.println("ip = " + address);
+            System.out.println("Port = " + port);
         } else {
             int reasonLength = buffer.readShort();
             while (reasonLength != 0) {
@@ -48,6 +50,7 @@ public class Packet2PairResponse extends Packet {
             }
 
             reason = builder.toString();
+            System.out.println("Reason: " + reason);
         }
     }
 

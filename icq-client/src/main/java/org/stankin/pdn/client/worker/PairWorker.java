@@ -46,7 +46,7 @@ public class PairWorker implements ServerWorker {
     private void addNewConnect(Packet2PairResponse packet) {
         AppContext.getInstance().getConnectionList().put(packet.getUsername(), packet.getSocketAddress());
 
-        //Добавить вкладку на ui
+        handler.getUi().addUserTab(packet.getUsername());
     }
 
     private boolean isSuccessPacket(Packet2PairResponse packet) {

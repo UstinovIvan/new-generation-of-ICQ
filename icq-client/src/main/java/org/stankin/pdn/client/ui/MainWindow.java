@@ -107,6 +107,10 @@ public class MainWindow extends JFrame {
         mainDialogueForm.getUserList().setModel(defaultListModel);
     }
 
+    public void addUserTab(String username) {
+        mainDialogueForm.getTabbedPane1().addTab(username, new JLabel(username));
+    }
+
     private void clearAll() {
         getContentPane().removeAll();
         repaint();

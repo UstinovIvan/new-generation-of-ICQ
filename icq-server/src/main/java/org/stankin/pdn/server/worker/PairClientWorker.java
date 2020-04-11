@@ -36,23 +36,18 @@ public class PairClientWorker extends AbstractClientWorker {
 
         Client pair = ServerContext.getInstance().getActiveClient(inPacket.getUserToPair());
         if (pair != null && !this.client.getConnectionList().containsKey(pair.getName())) {
-            sendReply(new Packet2PairResponse().withSocketAddress(pair.getAddress()).withUsername(pair.getName()),
-                    this.client);
+            sendPacket(new Packet2PairResponse().withSocketAddress(pair.getAddress()).withUsername(pair.getName()));
 
             //Отправляем адрес собеседника второму участнику диалога
-            sendReply(new Packet2PairResponse().withSocketAddress(this.client.getAddress())
-                    .withUsername(this.client.getName()), pair);
+            pair.getHandler().getClientWorker().sendPacket(new Packet2PairResponse().withSocketAddress(this.client.getAddress())
+                    .withUsername(this.client.getName()));
 
             client.getConnectionList().put(pair.getName(), pair.getAddress());
         } else {
-            sendReply(new Packet2PairResponse().withReason("Client is not online"), this.client);
+            sendPacket(new Packet2PairResponse().withReason("Client is not online"));
         }
 
         //Попробовать создать объект - канал. Выдавать его на двух пользователей и все сообщения транслировать в него
-    }
-
-    private void sendReply(Packet packet, Client to) {
-        channel.write(packet, to.getAddress());
     }
 
 

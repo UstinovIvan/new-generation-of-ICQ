@@ -7,4 +7,6 @@ public interface ClientWorker {
     void disconnectedFromChannel();
 
     void acceptPacket(Packet packet);
+
+    void sendPacket(Packet packet);
 }
