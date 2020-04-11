@@ -4,6 +4,7 @@ import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.packet.Packet2PairRequest;
 import org.stankin.pdn.client.packet.Packet2PairResponse;
+import org.stankin.pdn.client.packet.Packet2UsersListRequest;
 import org.stankin.pdn.server.context.ServerContext;
 import org.stankin.pdn.server.handler.ClientHandler;
 import org.stankin.pdn.server.model.Client;
@@ -25,6 +26,11 @@ public class PairClientWorker extends AbstractClientWorker {
 
     @Override
     public void acceptPacket(Packet packet) {
+        if (packet instanceof Packet2UsersListRequest) {
+            clientListWorker.acceptPacket(packet);
+            return;
+        }
+
         Packet2PairRequest inPacket = (Packet2PairRequest) packet;
 
         Client pair = ServerContext.getInstance().getActiveClient(inPacket.getUserToPair());
