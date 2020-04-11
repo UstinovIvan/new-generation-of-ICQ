@@ -35,9 +35,9 @@ public abstract class Packet {
                 return new Packet2UsersListRequest();
             case 21:
                 return new Packet2UsersListResponse();
-            case 3:
-                return new Packet3PublicKey();
             case 4:
+                return new Packet3PublicKey();
+            case 5:
                 return new Packet4Message();
             case 255:
                 return new Packet255Disconnect();

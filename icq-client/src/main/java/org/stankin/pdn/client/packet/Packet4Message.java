@@ -4,7 +4,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 public class Packet4Message extends Packet {
 
-    private final int ID = 4;
+    private final int ID = 5;
 
     @Override
     public int getID() {
