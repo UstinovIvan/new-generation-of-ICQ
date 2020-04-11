@@ -21,6 +21,7 @@ public class PairWorker implements ServerWorker {
     @Override
     public void acceptPacket(Packet packet) {
         Packet2PairResponse responsePacket = (Packet2PairResponse) packet;
+        System.out.println(((Packet2PairResponse) packet).getUsername());
         if (isSuccessPacket(responsePacket)) {
             if (!checkIsConnectExist(responsePacket)) {
                 addNewConnect(responsePacket);

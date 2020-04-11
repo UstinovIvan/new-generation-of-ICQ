@@ -29,12 +29,14 @@ public abstract class Packet {
                 return new Packet1LoginSuccess();
             case 12:
                 return new Packet1LoginFailed();
-            case 2:
-                return new Packet2PairRequest();
             case 20:
                 return new Packet2UsersListRequest();
             case 21:
                 return new Packet2UsersListResponse();
+            case 30:
+                return new Packet2PairRequest();
+            case 31:
+                return new Packet2PairResponse();
             case 4:
                 return new Packet3PublicKey();
             case 5:

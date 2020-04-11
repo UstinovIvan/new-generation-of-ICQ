@@ -14,8 +14,9 @@ public class PairClientWorker extends AbstractClientWorker {
     private ClientListWorker clientListWorker;
     private Client client;
 
-    PairClientWorker(ClientHandler handler, Channel channel, ClientListWorker clientListWorker) {
+    PairClientWorker(ClientHandler handler, Channel channel, Client client, ClientListWorker clientListWorker) {
         super(handler, channel);
+        this.client = client;
         this.clientListWorker = clientListWorker;
     }
 
@@ -42,7 +43,7 @@ public class PairClientWorker extends AbstractClientWorker {
             sendReply(new Packet2PairResponse().withSocketAddress(this.client.getAddress())
                     .withUsername(this.client.getName()), pair);
 
-            client.getConnectionList().put(client.getName(), client.getAddress());
+            client.getConnectionList().put(pair.getName(), pair.getAddress());
         } else {
             sendReply(new Packet2PairResponse().withReason("Client is not online"), this.client);
         }

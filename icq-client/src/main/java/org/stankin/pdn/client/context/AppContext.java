@@ -1,6 +1,7 @@
 package org.stankin.pdn.client.context;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public class AppContext {
 
     private List<String> onlineUsers;
 
-    private Map<String, SocketAddress> connectionList;
+    private Map<String, SocketAddress> connectionList = new HashMap<>();
 
     private AppContext() {
 

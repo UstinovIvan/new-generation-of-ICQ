@@ -25,6 +25,7 @@ public class Packet2UsersListResponse extends Packet {
             usersList.add(builder.toString());
             usersCount--;
         }
+        System.out.println(usersList);
     }
 
     @Override

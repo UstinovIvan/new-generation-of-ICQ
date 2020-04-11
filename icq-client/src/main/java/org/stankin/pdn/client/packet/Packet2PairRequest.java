@@ -21,6 +21,7 @@ public class Packet2PairRequest extends Packet {
             builder.append(buffer.readChar());
             length--;
         }
+        userToPair = builder.toString();
     }
 
     @Override

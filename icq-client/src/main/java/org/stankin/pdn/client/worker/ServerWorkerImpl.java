@@ -32,8 +32,9 @@ public class ServerWorkerImpl implements ServerWorker {
         System.out.println("Получен пакет с ID = " + packet.getID());
 
         if (authorities) {
-            if (packet.getID() == 20) {
+            if (packet.getID() == 21) {
                 updateOnlineUsers((Packet2UsersListResponse) packet);
+                this.handler.getUi().refreshUserList(AppContext.getInstance().getOnlineUsers());
             }
             if (packet.getID() == 31) {
                 this.pairWorker.acceptPacket(packet);
@@ -56,6 +57,8 @@ public class ServerWorkerImpl implements ServerWorker {
     private void checkAuthorization(Packet packet) {
         if (packet.getID() == 11) {
             authorities = true;
+
+            handler.getUi().showMainForm();
 
             Packet clientListPacket = new Packet2UsersListRequest();
             channel.write(clientListPacket);
