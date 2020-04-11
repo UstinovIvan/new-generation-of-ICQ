@@ -1,12 +1,13 @@
 package org.stankin.pdn.client.ui;
 
 import org.stankin.pdn.client.ClientApp;
-import org.stankin.pdn.client.packet.Packet1LoginRequest;
 import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet1LoginRequest;
 import org.stankin.pdn.client.worker.ServerWorker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class MainWindow extends JFrame {
 
@@ -14,95 +15,61 @@ public class MainWindow extends JFrame {
     private final MainWindow instance;
     private ServerWorker worker;
 
+    private JFrame activeFrame;
+
     public MainWindow(ClientApp clientApp) throws HeadlessException {
         this.clientApp = clientApp;
         this.instance = this;
 
-        setWindowOption();
-    }
-
-    private void setWindowOption() {
         setBounds(600, 300, 600, 500);
-        setTitle("Client");
+        setTitle("Corporate Messenger v1");
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-//        jtaTextAreaMessage = new JTextArea();
-//        jtaTextAreaMessage.setEditable(false);
-//        jtaTextAreaMessage.setLineWrap(true);
-//        JScrollPane jsp = new JScrollPane(jtaTextAreaMessage);
-//        add(jsp, BorderLayout.CENTER);
+        connectWindow();
+    }
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+    private void connectWindow() {
+        StartForm frame = new StartForm();
 
-        JPanel firstPanel = new JPanel();
-        firstPanel.setLayout(new GridLayout(4, 4));
-        firstPanel.setMaximumSize(new Dimension(300, 250));
-
-        JButton jbConnect = new JButton("Подключиться");
-        //jbConnect.setPreferredSize(new Dimension(100, 100));
-        firstPanel.add(jbConnect, BorderLayout.CENTER);
-
-        mainPanel.add(firstPanel);
-        setContentPane(mainPanel);
-
-        jbConnect.addActionListener(e -> {
+        frame.getButton1().addActionListener(e -> {
             clientApp.startClient(instance);
             System.out.println("Click!");
         });
-
-        mainPanel.setVisible(true);
+        add(frame.getPanel1());
         setVisible(true);
-    }
-
-    public void showError(String message) {
-        JFrame errorFrame = new JFrame("Error");
-        errorFrame.setBounds(600, 300, 300, 250);
-        //errorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JLabel jlMessage = new JLabel("Сообщение:");
-
-        errorFrame.add(jlMessage, BorderLayout.NORTH);
-
-        jlMessage.setText(message);
-        //add(errorFrame);
-
-        errorFrame.setVisible(true);
     }
 
     public void showLoginPage() {
         clearAll();
+        LoginForm frame = new LoginForm();
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        frame.getSendButton().addActionListener(e -> {
+            if (!frame.getLoginField().getText().trim().isEmpty() &&
+                    !frame.getLoginField().getText().trim().isEmpty()) {
 
-        JPanel firstPanel = new JPanel();
-        firstPanel.setLayout(new GridLayout(4, 4));
-        firstPanel.setMaximumSize(new Dimension(300, 250));
-
-        JTextField jtfLogin = new JTextField("Логин: ");
-        JTextField jtfPassword = new JTextField("Пароль: ");
-        JButton jbSend = new JButton("Отправить");
-
-        jbSend.addActionListener(e -> {
-            if (!jtfLogin.getText().trim().isEmpty() && !jtfPassword.getText().trim().isEmpty()) {
-                Packet loginPacket = new Packet1LoginRequest(jtfLogin.getText(), jtfPassword.getText());
+                Packet loginPacket = new Packet1LoginRequest(frame.getLoginField().getText(),
+                        new String(frame.getPasswordField().getPassword()));
                 worker.sendPacket(loginPacket);
             }
             System.out.println("Send Click");
         });
 
-        firstPanel.add(jtfLogin, BorderLayout.NORTH);
-        firstPanel.add(jtfPassword, BorderLayout.CENTER);
-        firstPanel.add(jbSend, BorderLayout.SOUTH);
-
-        mainPanel.add(firstPanel);
-        mainPanel.setVisible(true);
-        setContentPane(mainPanel);
+        add(frame.getPanel1());
         setVisible(true);
-        //repaint();
     }
 
+    public void showError(String error) {
+        ErrorForm frame = new ErrorForm();
+        frame.setBounds(900, 550, 200, 150);
+
+        frame.getErrorMessage().setText(error);
+        frame.getOkButton().addActionListener(e -> {
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        });
+
+        frame.setVisible(true);
+    }
 
     private void clearAll() {
         getContentPane().removeAll();
