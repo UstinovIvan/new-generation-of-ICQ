@@ -48,6 +48,8 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         super.channelDisconnected(ctx, e);
 
         mainWorker.disconnectedFromChannel();
+        ui.showError("Сервер разорвал соединение");
+        ui.connectWindow();
         System.out.println("channel disconnected");
     }
 
