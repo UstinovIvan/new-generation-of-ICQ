@@ -5,10 +5,7 @@ import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.packet.Packet1LoginRequest;
 import org.stankin.pdn.client.packet.Packet2PairRequest;
 import org.stankin.pdn.client.packet.Packet2UsersListRequest;
-import org.stankin.pdn.client.ui.forms.ErrorForm;
-import org.stankin.pdn.client.ui.forms.LoginForm;
-import org.stankin.pdn.client.ui.forms.MainDialogueForm;
-import org.stankin.pdn.client.ui.forms.StartForm;
+import org.stankin.pdn.client.ui.forms.*;
 import org.stankin.pdn.client.worker.ServerWorker;
 
 import javax.swing.*;
@@ -108,7 +105,7 @@ public class MainWindow extends JFrame {
     }
 
     public void addUserTab(String username) {
-        mainDialogueForm.getTabbedPane1().addTab(username, new JLabel(username));
+        mainDialogueForm.getTabbedPane1().addTab(username, new TabMessageForm().getMainPanel());
     }
 
     private void clearAll() {
