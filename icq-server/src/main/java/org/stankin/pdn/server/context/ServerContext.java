@@ -30,4 +30,14 @@ public class ServerContext {
     public List<String> getClientNames() {
         return clientNames;
     }
+
+    public Client getActiveClient(String name) {
+        for (Client client : clientList.values()) {
+            if (client.getName().equals(name)) {
+                return client;
+            }
+        }
+
+        return null;
+    }
 }

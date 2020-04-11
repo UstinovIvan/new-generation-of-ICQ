@@ -3,13 +3,15 @@ package org.stankin.pdn.server.model;
 import com.google.common.base.Objects;
 
 import java.net.SocketAddress;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Client {
 
     private String name;
     private SocketAddress address;
-    private List<Client> connectionList;
+    private Map<String, SocketAddress> connectionList;
 
     public String getName() {
         return name;
@@ -27,11 +29,14 @@ public class Client {
         this.address = address;
     }
 
-    public List<Client> getConnectionList() {
+    public Map<String, SocketAddress> getConnectionList() {
+        if (this.connectionList == null) {
+            this.connectionList = new HashMap<>();
+        }
         return connectionList;
     }
 
-    public void setConnectionList(List<Client> connectionList) {
+    public void setConnectionList(Map<String, SocketAddress> connectionList) {
         this.connectionList = connectionList;
     }
 

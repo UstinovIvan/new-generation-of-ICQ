@@ -1,29 +1,25 @@
 package org.stankin.pdn.client.worker;
 
+import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
-import org.stankin.pdn.client.packet.Packet1LoginFailed;
-import org.stankin.pdn.client.packet.Packet2UsersListRequest;
-import org.stankin.pdn.client.packet.Packet2UsersListResponse;
-import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.*;
 
 import org.jboss.netty.channel.Channel;
-
-import java.util.List;
 
 public class ServerWorkerImpl implements ServerWorker {
 
     private ServerHandler handler;
     private Channel channel;
 
-    private List<String> clientList;
-
-    private List<String> activeClientList;
+    private PairWorker pairWorker;
 
     private boolean authorities = false;
 
     public ServerWorkerImpl(ServerHandler handler, Channel channel) {
         this.handler = handler;
         this.channel = channel;
+
+        this.pairWorker = new PairWorker(handler);
     }
 
     @Override
@@ -37,7 +33,10 @@ public class ServerWorkerImpl implements ServerWorker {
 
         if (authorities) {
             if (packet.getID() == 20) {
-                clientList = ((Packet2UsersListResponse) packet).getUsersList();
+                updateOnlineUsers((Packet2UsersListResponse) packet);
+            }
+            if (packet.getID() == 31) {
+                this.pairWorker.acceptPacket(packet);
             }
 
 
@@ -64,4 +63,10 @@ public class ServerWorkerImpl implements ServerWorker {
             handler.getUi().showError(((Packet1LoginFailed) packet).getReason());
         }
     }
+
+    private void updateOnlineUsers(Packet2UsersListResponse packet) {
+        AppContext.getInstance().setOnlineUsers(packet.getUsersList());
+    }
+
+
 }

@@ -8,7 +8,7 @@ import org.stankin.pdn.client.worker.ServerWorkerImpl;
 
 public class ServerHandler extends SimpleChannelUpstreamHandler {
 
-    private ServerWorker worker;
+    private ServerWorker mainWorker;
 
     private MainWindow ui;
 
@@ -21,17 +21,17 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         super.channelConnected(ctx, e);
 
         System.out.println("channel connected");
-        worker = new ServerWorkerImpl(this, e.getChannel());
+        mainWorker = new ServerWorkerImpl(this, e.getChannel());
 
         ui.showLoginPage();
-        ui.setWorker(worker);
+        ui.setWorker(mainWorker);
     }
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         super.messageReceived(ctx, e);
 
-        worker.acceptPacket((Packet)e.getMessage());
+        mainWorker.acceptPacket((Packet)e.getMessage());
         System.out.println("message from server recieved");
     }
 
@@ -47,7 +47,7 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelDisconnected(ctx, e);
 
-        worker.disconnectedFromChannel();
+        mainWorker.disconnectedFromChannel();
         System.out.println("channel disconnected");
     }
 

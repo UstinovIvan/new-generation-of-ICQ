@@ -34,5 +34,7 @@ public class ClientListWorker extends AbstractClientWorker {
         clientListPacket.setUsersList(usersList);
 
         channel.write(clientListPacket);
+
+        handler.setClientWorker(new PairClientWorker(this.handler, this.channel, this));
     }
 }
