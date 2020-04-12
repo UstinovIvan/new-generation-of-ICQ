@@ -5,7 +5,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
-public class Packet2PairResponse extends Packet {
+public class Packet3PairResponse extends Packet {
 
     private final int ID = 31;
 
@@ -96,7 +96,7 @@ public class Packet2PairResponse extends Packet {
         this.username = username;
     }
 
-    public Packet2PairResponse withUsername(String username) {
+    public Packet3PairResponse withUsername(String username) {
         this.username = username;
         return this;
     }
@@ -109,7 +109,7 @@ public class Packet2PairResponse extends Packet {
         this.socketAddress = socketAddress;
     }
 
-    public Packet2PairResponse withSocketAddress(SocketAddress socketAddress) {
+    public Packet3PairResponse withSocketAddress(SocketAddress socketAddress) {
         this.socketAddress = socketAddress;
         return this;
     }
@@ -122,7 +122,7 @@ public class Packet2PairResponse extends Packet {
         this.reason = reason;
     }
 
-    public Packet2PairResponse withReason(String reason) {
+    public Packet3PairResponse withReason(String reason) {
         this.reason = null;
         return this;
     }

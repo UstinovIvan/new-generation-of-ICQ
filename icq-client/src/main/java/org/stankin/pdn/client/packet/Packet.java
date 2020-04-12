@@ -34,13 +34,13 @@ public abstract class Packet {
             case 21:
                 return new Packet2UsersListResponse();
             case 30:
-                return new Packet2PairRequest();
+                return new Packet3PairRequest();
             case 31:
-                return new Packet2PairResponse();
-            case 4:
-                return new Packet3PublicKey();
+                return new Packet3PairResponse();
+            case 40:
+                return new Packet4PublicKey();
             case 5:
-                return new Packet4Message();
+                return new Packet5Message();
             case 255:
                 return new Packet255Disconnect();
             default:

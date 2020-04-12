@@ -3,7 +3,7 @@ package org.stankin.pdn.client.ui;
 import org.stankin.pdn.client.ClientApp;
 import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.packet.Packet1LoginRequest;
-import org.stankin.pdn.client.packet.Packet2PairRequest;
+import org.stankin.pdn.client.packet.Packet3PairRequest;
 import org.stankin.pdn.client.packet.Packet2UsersListRequest;
 import org.stankin.pdn.client.ui.forms.*;
 import org.stankin.pdn.client.worker.ServerWorker;
@@ -78,7 +78,7 @@ public class MainWindow extends JFrame {
                 JList list = (JList) e.getSource();
                 if (e.getClickCount() == 2) {
                     int index = list.locationToIndex(e.getPoint());
-                    worker.sendPacket(new Packet2PairRequest()
+                    worker.sendPacket(new Packet3PairRequest()
                             .withUserToPair((String) list.getModel().getElementAt(index)));
                 }
             }

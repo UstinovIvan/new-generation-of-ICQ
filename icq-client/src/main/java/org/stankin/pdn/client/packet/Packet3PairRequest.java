@@ -2,7 +2,7 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
-public class Packet2PairRequest extends Packet {
+public class Packet3PairRequest extends Packet {
 
     private final int ID = 30;
 
@@ -41,7 +41,7 @@ public class Packet2PairRequest extends Packet {
         this.userToPair = userToPair;
     }
 
-    public Packet2PairRequest withUserToPair(String userToPair) {
+    public Packet3PairRequest withUserToPair(String userToPair) {
         this.userToPair = userToPair;
         return this;
     }
