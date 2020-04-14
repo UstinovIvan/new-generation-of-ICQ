@@ -1,16 +1,41 @@
 package org.stankin.pdn.client.worker;
 
+import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
 import org.stankin.pdn.client.packet.Packet;
-import org.stankin.pdn.client.packet.Packet3PairResponse;
+import org.stankin.pdn.client.packet.Packet3PairCreate;
+
+import java.util.UUID;
 
 public class PairWorker implements ServerWorker {
 
-    private ServerHandler handler;
+    protected ServerHandler handler;
+    protected Channel channel;
 
-    PairWorker(ServerHandler handler) {
+    public PairWorker(ServerHandler handler, Channel channel) {
         this.handler = handler;
+        this.channel = channel;
+    }
+
+    @Override
+    public void acceptPacket(Packet packet) {
+        Packet3PairCreate responsePacket = (Packet3PairCreate) packet;
+        System.out.println("Получен пакет от " + ((Packet3PairCreate) packet).getFrom());
+
+        if (responsePacket.getNeedAnswer() == 1) {
+            this.sendPacket(
+                    new Packet3PairCreate()
+                    .withTo(responsePacket.getFrom())
+                    .withPublicKey(generatePublicKey())
+                    .withNeedAnswer((short) -1)
+            );
+
+        } else {
+            System.out.println("На пакет от " + responsePacket.getFrom() + " не нужен ответ");
+        }
+
+        addNewConnect(responsePacket);
     }
 
     @Override
@@ -19,37 +44,37 @@ public class PairWorker implements ServerWorker {
     }
 
     @Override
-    public void acceptPacket(Packet packet) {
-        Packet3PairResponse responsePacket = (Packet3PairResponse) packet;
-        System.out.println(((Packet3PairResponse) packet).getUsername());
-        if (isSuccessPacket(responsePacket)) {
-            if (!checkIsConnectExist(responsePacket)) {
-                addNewConnect(responsePacket);
-            } else {
-                this.handler.getUi().showError("Соединение уже установлено");
-            }
-
-        } else {
-            this.handler.getUi().showError(responsePacket.getReason());
-        }
-    }
-
-    @Override
     public void sendPacket(Packet packet) {
-
+        Packet3PairCreate pairRequest = (Packet3PairCreate) packet;
+        if (isConnectExist(pairRequest.getTo())) {
+            this.handler.getUi().showError("Соединение уже установлено");
+            return;
+        }
+        System.out.println("Отправлен пакет " + pairRequest.getTo());
+        channel.write(packet);
     }
 
-    private boolean checkIsConnectExist(Packet3PairResponse packet) {
-        return AppContext.getInstance().getConnectionList().containsKey(packet.getUsername());
+    void fillSecurityAndSend(Packet packet) {
+        sendPacket(((Packet3PairCreate) packet)
+                .withPublicKey(generatePublicKey())
+                .withNeedAnswer((byte) 1));
     }
 
-    private void addNewConnect(Packet3PairResponse packet) {
-        AppContext.getInstance().getConnectionList().put(packet.getUsername(), packet.getSocketAddress());
-
-        handler.getUi().addUserTab(packet.getUsername());
+    private boolean isConnectExist(String user) {
+        return AppContext.getInstance().getConnectionList().containsKey(user);
     }
 
-    private boolean isSuccessPacket(Packet3PairResponse packet) {
-        return packet.getReason() == null;
+    private void addNewConnect(Packet3PairCreate packet) {
+        AppContext.getInstance().getConnectionList().put(packet.getFrom(), packet.getPublicKey());
+
+        System.out.println("Foreign key = " + packet.getPublicKey());
+        handler.getUi().addUserTab(packet.getTo());
+    }
+    
+    //TODO: заглушка. Реализовать
+    private String generatePublicKey() {
+        String key =  UUID.randomUUID().toString();
+        System.out.println("My key = " + key);
+        return key;
     }
 }

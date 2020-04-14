@@ -1,10 +1,7 @@
 package org.stankin.pdn.server.worker;
 
 import org.jboss.netty.channel.Channel;
-import org.stankin.pdn.client.packet.Packet;
-import org.stankin.pdn.client.packet.Packet3PairRequest;
-import org.stankin.pdn.client.packet.Packet3PairResponse;
-import org.stankin.pdn.client.packet.Packet2UsersListRequest;
+import org.stankin.pdn.client.packet.*;
 import org.stankin.pdn.server.context.ServerContext;
 import org.stankin.pdn.server.handler.ClientHandler;
 import org.stankin.pdn.server.model.Client;
@@ -32,24 +29,25 @@ public class PairClientWorker extends AbstractClientWorker {
             clientListWorker.acceptPacket(packet);
             return;
         }
-
-        Packet3PairRequest inPacket = (Packet3PairRequest) packet;
-
-        Client pair = ServerContext.getInstance().getActiveClient(inPacket.getUserToPair());
-        if (pair != null && !this.client.getConnectionList().containsKey(pair.getName())) {
-            sendPacket(new Packet3PairResponse().withSocketAddress(pair.getAddress()).withUsername(pair.getName()));
-
-            //Отправляем адрес собеседника второму участнику диалога
-            pair.getHandler().getClientWorker().sendPacket(new Packet3PairResponse().withSocketAddress(this.client.getAddress())
-                    .withUsername(this.client.getName()));
-
-            client.getConnectionList().put(pair.getName(), pair.getAddress());
-        } else {
-            sendPacket(new Packet3PairResponse().withReason("Client is not online"));
+        if (packet instanceof Transmittable) {
+            transmitPacket((Transmittable) packet);
         }
-
-        //Попробовать создать объект - канал. Выдавать его на двух пользователей и все сообщения транслировать в него
     }
 
+    private void transmitPacket(Transmittable transmittable) {
+        transmittable.setFrom(this.client.getName());
 
+        if (this.client.getConnectionList().containsKey(transmittable.getTo())) {
+            this.client.getConnectionList().get(transmittable.getTo()).sendPacket((Packet) transmittable);
+        } else {
+            Client pair = ServerContext.getInstance().getActiveClient(transmittable.getTo());
+            if (pair != null) {
+
+                this.client.getConnectionList().put(pair.getName(), pair.getHandler().getClientWorker());
+
+                Packet packet = (Packet) transmittable;
+                pair.getHandler().getClientWorker().sendPacket(packet);
+            }
+        }
+    }
 }

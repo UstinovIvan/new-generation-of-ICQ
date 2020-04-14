@@ -33,10 +33,8 @@ public abstract class Packet {
                 return new Packet2UsersListRequest();
             case 21:
                 return new Packet2UsersListResponse();
-            case 30:
-                return new Packet3PairRequest();
             case 31:
-                return new Packet3PairResponse();
+                return new Packet3PairCreate();
             case 5:
                 return new Packet5Message();
             case 255:

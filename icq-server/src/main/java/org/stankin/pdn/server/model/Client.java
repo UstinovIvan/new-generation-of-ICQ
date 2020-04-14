@@ -2,6 +2,7 @@ package org.stankin.pdn.server.model;
 
 import com.google.common.base.Objects;
 import org.stankin.pdn.server.handler.ClientHandler;
+import org.stankin.pdn.server.worker.ClientWorker;
 
 import java.net.SocketAddress;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class Client {
 
     private String name;
     private SocketAddress address;
-    private Map<String, SocketAddress> connectionList;
+    private Map<String, ClientWorker> connectionList;
     private ClientHandler handler;
 
     public String getName() {
@@ -22,23 +23,15 @@ public class Client {
         this.name = name;
     }
 
-    public SocketAddress getAddress() {
-        return address;
-    }
-
     public void setAddress(SocketAddress address) {
         this.address = address;
     }
 
-    public Map<String, SocketAddress> getConnectionList() {
+    public Map<String, ClientWorker> getConnectionList() {
         if (this.connectionList == null) {
             this.connectionList = new HashMap<>();
         }
         return connectionList;
-    }
-
-    public void setConnectionList(Map<String, SocketAddress> connectionList) {
-        this.connectionList = connectionList;
     }
 
     public ClientHandler getHandler() {

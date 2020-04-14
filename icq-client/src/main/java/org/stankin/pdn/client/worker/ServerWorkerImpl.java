@@ -8,8 +8,8 @@ import org.jboss.netty.channel.Channel;
 
 public class ServerWorkerImpl implements ServerWorker {
 
-    private ServerHandler handler;
-    private Channel channel;
+    protected ServerHandler handler;
+    protected Channel channel;
 
     private PairWorker pairWorker;
 
@@ -19,7 +19,7 @@ public class ServerWorkerImpl implements ServerWorker {
         this.handler = handler;
         this.channel = channel;
 
-        this.pairWorker = new PairWorker(handler);
+        this.pairWorker = new PairWorker(this.getHandler(), this.channel);
     }
 
     @Override
@@ -40,9 +40,6 @@ public class ServerWorkerImpl implements ServerWorker {
                 this.pairWorker.acceptPacket(packet);
             }
 
-
-
-
         } else {
             checkAuthorization(packet);
         }
@@ -51,6 +48,11 @@ public class ServerWorkerImpl implements ServerWorker {
 
     @Override
     public void sendPacket(Packet packet) {
+        if (packet.getID() == 31) {
+            pairWorker.fillSecurityAndSend(packet);
+            return;
+        }
+
         channel.write(packet);
     }
 
@@ -71,5 +73,11 @@ public class ServerWorkerImpl implements ServerWorker {
         AppContext.getInstance().setOnlineUsers(packet.getUsersList());
     }
 
+    public ServerHandler getHandler() {
+        return handler;
+    }
 
+    public Channel getChannel() {
+        return channel;
+    }
 }
