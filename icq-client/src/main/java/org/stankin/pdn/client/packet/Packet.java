@@ -37,8 +37,6 @@ public abstract class Packet {
                 return new Packet3PairRequest();
             case 31:
                 return new Packet3PairResponse();
-            case 40:
-                return new Packet4PublicKey();
             case 5:
                 return new Packet5Message();
             case 255:
