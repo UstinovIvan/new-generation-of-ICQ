@@ -3,8 +3,10 @@ package org.stankin.pdn.client.worker;
 import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
+import org.stankin.pdn.client.model.ConnectedUser;
 import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.packet.Packet3PairCreate;
+import org.stankin.pdn.client.ui.forms.TabMessageForm;
 
 import java.util.UUID;
 
@@ -65,10 +67,12 @@ public class PairWorker implements ServerWorker {
     }
 
     private void addNewConnect(Packet3PairCreate packet) {
-        AppContext.getInstance().getConnectionList().put(packet.getFrom(), packet.getPublicKey());
+        TabMessageForm tabForm = handler.getUi().addUserTab(packet.getTo());
+        AppContext.getInstance().getConnectionList().put(packet.getFrom(),
+                new ConnectedUser(packet.getPublicKey(), tabForm));
 
         System.out.println("Foreign key = " + packet.getPublicKey());
-        handler.getUi().addUserTab(packet.getTo());
+
     }
     
     //TODO: заглушка. Реализовать

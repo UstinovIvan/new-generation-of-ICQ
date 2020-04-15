@@ -1,5 +1,7 @@
 package org.stankin.pdn.client.context;
 
+import org.stankin.pdn.client.model.ConnectedUser;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,7 @@ public class AppContext {
 
     private List<String> onlineUsers;
 
-    private Map<String, String> connectionList = new HashMap<>();
+    private Map<String, ConnectedUser> connectionList = new HashMap<>();
 
     private AppContext() {
 
@@ -34,7 +36,7 @@ public class AppContext {
         this.onlineUsers = onlineUsers;
     }
 
-    public Map<String, String> getConnectionList() {
+    public Map<String, ConnectedUser> getConnectionList() {
         return connectionList;
     }
 
