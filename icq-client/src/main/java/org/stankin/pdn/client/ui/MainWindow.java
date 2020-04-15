@@ -91,13 +91,20 @@ public class MainWindow extends JFrame {
     }
 
     public void showError(String error) {
-        ErrorForm frame = new ErrorForm();
+        int widthFrame = error.length() > 10 ? error.length()*10 : 200;
 
+        ErrorForm frame = new ErrorForm();
+        setEnabled(false);
         frame.setBounds(getBounds());
+        frame.setSize(new Dimension(widthFrame, 150));
+        frame.setAlwaysOnTop(true);
 
         frame.getErrorMessage().setText(error);
-        frame.getOkButton().addActionListener(e -> frame.dispatchEvent(
-                new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
+        frame.getOkButton().addActionListener(e -> {
+            frame.dispatchEvent(
+                    new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            setEnabled(true);
+        });
 
         frame.setVisible(true);
     }

@@ -39,7 +39,13 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         super.exceptionCaught(ctx, e);
 
-        ui.showError(e.getCause().getMessage());
+        String message = e.getCause().getMessage();
+
+        if (message.length() == 0) {
+            message = "Неизвестная ошибка: " + e.getCause();
+        }
+
+        ui.showError(message);
         System.out.println("exception");
     }
 
