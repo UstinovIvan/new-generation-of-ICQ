@@ -4,8 +4,28 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 public abstract class TransmittablePacket extends Packet implements Transmittable {
 
-    protected String from;
-    protected String to;
+    private String from;
+    private String to;
+
+    @Override
+    public void get(ChannelBuffer buffer) {
+        int length = buffer.readShort();
+        to = readBuffer(length, buffer);
+
+        length = buffer.readShort();
+        from = readBuffer(length, buffer);
+    }
+
+    @Override
+    public void send(ChannelBuffer buffer) {
+        writeBuffer(to, buffer);
+
+        if (from != null) {
+            writeBuffer(from, buffer);
+        } else {
+            buffer.writeShort(0);
+        }
+    }
 
     String readBuffer(int length, ChannelBuffer buffer) {
         StringBuilder builder = new StringBuilder();

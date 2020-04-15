@@ -15,26 +15,16 @@ public class Packet5Message extends TransmittablePacket {
 
     @Override
     public void get(ChannelBuffer buffer) {
+        super.get(buffer);
+
         int length = buffer.readShort();
         message = readBuffer(length, buffer);
-
-        length = buffer.readShort();
-        to = readBuffer(length, buffer);
-
-        length = buffer.readShort();
-        from = readBuffer(length, buffer);
     }
 
     @Override
     public void send(ChannelBuffer buffer) {
+        super.send(buffer);
         writeBuffer(message, buffer);
-        writeBuffer(to, buffer);
-
-        if (from != null) {
-            writeBuffer(from, buffer);
-        } else {
-            buffer.writeShort(0);
-        }
     }
 
     public String getMessage() {

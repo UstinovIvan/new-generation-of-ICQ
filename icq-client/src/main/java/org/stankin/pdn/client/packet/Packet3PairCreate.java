@@ -11,32 +11,20 @@ public class Packet3PairCreate extends TransmittablePacket{
 
     @Override
     public void get(ChannelBuffer buffer) {
+        super.get(buffer);
 
         needAnswer = buffer.readShort();
 
         int keyLength = buffer.readShort();
         this.publicKey = readBuffer(keyLength, buffer);
-
-        int toLength = buffer.readShort();
-        this.to = readBuffer(toLength, buffer);
-
-        int fromLength = buffer.readShort();
-        from = readBuffer(fromLength, buffer);
     }
 
     @Override
     public void send(ChannelBuffer buffer) {
+        super.send(buffer);
 
         buffer.writeShort(needAnswer);
-
         writeBuffer(publicKey, buffer);
-        writeBuffer(to, buffer);
-
-        if (from != null) {
-            writeBuffer(from, buffer);
-        } else {
-            buffer.writeShort(0);
-        }
     }
 
     @Override
@@ -71,12 +59,12 @@ public class Packet3PairCreate extends TransmittablePacket{
     }
 
     public Packet3PairCreate withTo(String to) {
-        this.to = to;
+        this.setTo(to);
         return this;
     }
 
     public Packet3PairCreate withFrom(String from) {
-        this.from = from;
+        this.setFrom(from);
         return this;
     }
 }
