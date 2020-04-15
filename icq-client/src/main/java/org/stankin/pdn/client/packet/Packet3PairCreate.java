@@ -39,24 +39,6 @@ public class Packet3PairCreate extends TransmittablePacket{
         }
     }
 
-    private String readBuffer(int length, ChannelBuffer buffer) {
-        StringBuilder builder = new StringBuilder();
-
-        while (length != 0) {
-            builder.append(buffer.readChar());
-            length--;
-        }
-        return builder.toString();
-    }
-
-    private void writeBuffer(String string, ChannelBuffer buffer) {
-        int stringLength = string.length();
-        buffer.writeShort(stringLength);
-        for (int i = 0; i < stringLength; i++) {
-            buffer.writeChar(string.charAt(i));
-        }
-    }
-
     @Override
     public int getID() {
         return this.ID;

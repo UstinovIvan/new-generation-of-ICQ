@@ -12,6 +12,7 @@ public class ServerWorkerImpl implements ServerWorker {
     protected Channel channel;
 
     private PairWorker pairWorker;
+    private MessageWorker messageWorker;
 
     private boolean authorities = false;
 
@@ -20,6 +21,7 @@ public class ServerWorkerImpl implements ServerWorker {
         this.channel = channel;
 
         this.pairWorker = new PairWorker(this.getHandler(), this.channel);
+        this.messageWorker = new MessageWorker(this.getHandler(), this.channel);
     }
 
     @Override
@@ -35,9 +37,14 @@ public class ServerWorkerImpl implements ServerWorker {
             if (packet.getID() == 21) {
                 updateOnlineUsers((Packet2UsersListResponse) packet);
                 this.handler.getUi().refreshUserList(AppContext.getInstance().getOnlineUsers());
+                return;
             }
             if (packet.getID() == 31) {
                 this.pairWorker.acceptPacket(packet);
+                return;
+            }
+            if (packet.getID() == 5) {
+                this.messageWorker.acceptPacket(packet);
             }
 
         } else {
@@ -50,6 +57,10 @@ public class ServerWorkerImpl implements ServerWorker {
     public void sendPacket(Packet packet) {
         if (packet.getID() == 31) {
             pairWorker.fillSecurityAndSend(packet);
+            return;
+        }
+        if (packet.getID() == 5) {
+            messageWorker.sendPacket(packet);
             return;
         }
 

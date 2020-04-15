@@ -67,7 +67,7 @@ public class PairWorker implements ServerWorker {
     }
 
     private void addNewConnect(Packet3PairCreate packet) {
-        TabMessageForm tabForm = handler.getUi().addUserTab(packet.getTo());
+        TabMessageForm tabForm = handler.getUi().addUserTab(packet.getFrom());
         AppContext.getInstance().getConnectionList().put(packet.getFrom(),
                 new ConnectedUser(packet.getPublicKey(), tabForm));
 

@@ -2,10 +2,7 @@ package org.stankin.pdn.client.ui;
 
 import org.stankin.pdn.client.ClientApp;
 import org.stankin.pdn.client.context.AppContext;
-import org.stankin.pdn.client.packet.Packet;
-import org.stankin.pdn.client.packet.Packet1LoginRequest;
-import org.stankin.pdn.client.packet.Packet2UsersListRequest;
-import org.stankin.pdn.client.packet.Packet3PairCreate;
+import org.stankin.pdn.client.packet.*;
 import org.stankin.pdn.client.ui.forms.*;
 import org.stankin.pdn.client.worker.ServerWorker;
 
@@ -117,6 +114,16 @@ public class MainWindow extends JFrame {
 
     public TabMessageForm addUserTab(String username) {
         TabMessageForm tabPanel = new TabMessageForm(username);
+        tabPanel.getSendButton().addActionListener(e -> {
+            String str = tabPanel.getTextField1().getText();
+
+            Packet5Message messagePacket = new Packet5Message().withMessage(str);
+            messagePacket.setTo(tabPanel.getName());
+            worker.sendPacket(messagePacket);
+
+            tabPanel.getTextArea().append("\nВы: " + str);
+            tabPanel.getTextField1().setText("");
+        });
         mainDialogueForm.getTabbedPane1().addTab(username, tabPanel.getMainPanel());
 
         return tabPanel;

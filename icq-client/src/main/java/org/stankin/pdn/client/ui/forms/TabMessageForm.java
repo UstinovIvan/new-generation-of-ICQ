@@ -17,6 +17,7 @@ public class TabMessageForm extends JPanel {
 
     public TabMessageForm(String name) {
         super();
+        this.setName(name);
         this.mainPanel.setName(name);
     }
 
@@ -39,6 +40,8 @@ public class TabMessageForm extends JPanel {
     public JTextArea getTextArea() {
         return textArea;
     }
+
+
 
     public static void main(String[] args) {
         MainDialogueForm mainDialogueForm = new MainDialogueForm();
