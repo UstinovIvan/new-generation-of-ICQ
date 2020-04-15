@@ -14,11 +14,13 @@ public class TabMessageForm extends JPanel {
     private JButton fileAttachButton;
     private JPanel bottomPanel;
     private JTextArea textArea;
+    private JScrollPane scrollPane;
 
     public TabMessageForm(String name) {
         super();
         this.setName(name);
         this.mainPanel.setName(name);
+        scrollPane.setViewportView(textArea);
     }
 
     public JPanel getMainPanel() {
@@ -42,7 +44,6 @@ public class TabMessageForm extends JPanel {
     }
 
 
-
     public static void main(String[] args) {
         MainDialogueForm mainDialogueForm = new MainDialogueForm();
         mainDialogueForm.setBounds(600, 300, 600, 500);
@@ -50,6 +51,12 @@ public class TabMessageForm extends JPanel {
         mainDialogueForm.setVisible(true);
 
         TabMessageForm newTab = new TabMessageForm("name");
+//        newTab.getTextArea().setWrapStyleWord(true);
+//        newTab.getTextArea().setLineWrap(true);
+        newTab.getSendButton().addActionListener(e -> {
+            newTab.getTextArea().append("\n" + newTab.getTextField1().getText());
+            newTab.getTextField1().setText("");
+        });
         //newTab.setPreferredSize(new Dimension(100, 100));
         //mainDialogueForm.getTabbedPane1().add();
         mainDialogueForm.getTabbedPane1().addTab("zalupa", newTab.getMainPanel());
@@ -92,10 +99,15 @@ public class TabMessageForm extends JPanel {
         fileButton = new JButton();
         fileButton.setText("Файл");
         bottomPanel.add(fileButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane = new JScrollPane();
+        panel1.add(scrollPane, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFocusable(false);
-        mainPanel.add(textArea, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        panel1.add(textArea, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
     }
 
     /**
