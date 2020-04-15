@@ -15,9 +15,11 @@ public class MainDialogueForm extends JFrame {
     private JTabbedPane tabbedPane1;
     private JButton refreshButton;
     private JLabel userListLabel;
+    private JScrollPane scrollPane;
 
     public MainDialogueForm() {
         setContentPane(mainPanel);
+        scrollPane.setViewportView(userList);
     }
 
     public JList getUserList() {
@@ -43,13 +45,20 @@ public class MainDialogueForm extends JFrame {
         mainDialogueForm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         List<String> list = new ArrayList<>();
-        list.add("zalupa");
-        list.add("konina");
-        list.add("svinina");
-        list.add("govno");
+        for (int i = 0; i < 50; i++) {
+            list.add(i + "asd12");
+        }
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         defaultListModel.addAll(list);
         mainDialogueForm.getUserList().setModel(defaultListModel);
+
+        TabMessageForm newTab = new TabMessageForm("name");
+        newTab.getSendButton().addActionListener(e -> {
+            newTab.getTextArea().append("\n" + newTab.getTextField1().getText());
+            newTab.getTextField1().setText("");
+        });
+
+        mainDialogueForm.getTabbedPane1().addTab("one", newTab.getMainPanel());
         System.out.println(mainDialogueForm.getUserList().getModel());
     }
 
@@ -71,21 +80,22 @@ public class MainDialogueForm extends JFrame {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         userListPanel = new JPanel();
-        userListPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1, true, false));
+        userListPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(userListPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         userListLabel = new JLabel();
         userListLabel.setText("Список пользователей");
         userListPanel.add(userListLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        userList = new JList();
-        final DefaultListModel defaultListModel1 = new DefaultListModel();
-        userList.setModel(defaultListModel1);
-        userList.setSelectionMode(0);
-        userList.putClientProperty("List.isFileList", Boolean.FALSE);
-        userListPanel.add(userList, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         refreshButton = new JButton();
         refreshButton.setLabel("Обновить");
         refreshButton.setText("Обновить");
         userListPanel.add(refreshButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        userListPanel.add(panel1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        scrollPane = new JScrollPane();
+        panel1.add(scrollPane, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        userList = new JList();
+        panel1.add(userList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         tabbedPane1 = new JTabbedPane();
         tabbedPane1.setEnabled(true);
         tabbedPane1.setTabLayoutPolicy(0);
