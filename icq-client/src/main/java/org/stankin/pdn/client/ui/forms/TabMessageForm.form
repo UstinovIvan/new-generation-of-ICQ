@@ -57,8 +57,11 @@
           </grid>
         </constraints>
         <properties>
+          <columns value="50"/>
           <editable value="false"/>
-          <focusable value="false"/>
+          <focusable value="true"/>
+          <lineWrap value="true"/>
+          <wrapStyleWord value="true"/>
         </properties>
       </component>
     </children>
