@@ -73,6 +73,7 @@
               </grid>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <lineWrap value="true"/>
               <wrapStyleWord value="true"/>
             </properties>
