@@ -15,8 +15,9 @@ public class TabMessageForm extends JPanel {
     private JPanel bottomPanel;
     private JTextArea textArea;
 
-    public TabMessageForm() {
+    public TabMessageForm(String name) {
         super();
+        this.mainPanel.setName(name);
     }
 
     public JPanel getMainPanel() {
@@ -45,7 +46,7 @@ public class TabMessageForm extends JPanel {
         mainDialogueForm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainDialogueForm.setVisible(true);
 
-        TabMessageForm newTab = new TabMessageForm();
+        TabMessageForm newTab = new TabMessageForm("name");
         //newTab.setPreferredSize(new Dimension(100, 100));
         //mainDialogueForm.getTabbedPane1().add();
         mainDialogueForm.getTabbedPane1().addTab("zalupa", newTab.getMainPanel());
