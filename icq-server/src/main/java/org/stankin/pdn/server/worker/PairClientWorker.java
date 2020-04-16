@@ -17,6 +17,7 @@ public class PairClientWorker extends AbstractClientWorker {
 
     @Override
     public void acceptPacket(Packet packet) {
+        System.out.println("Получен пакет с ID = " + packet.getID());
         if (packet instanceof Packet2UsersListRequest) {
             clientListWorker.acceptPacket(packet);
             return;

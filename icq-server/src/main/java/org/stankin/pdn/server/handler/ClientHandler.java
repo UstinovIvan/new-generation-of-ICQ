@@ -32,7 +32,6 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             clientWorker.acceptPacket((Packet) e.getMessage());
         }
 
-        System.out.println("message recieved");
     }
 
     @Override
