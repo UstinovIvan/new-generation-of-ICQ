@@ -18,11 +18,6 @@ public class AuthorizationClientWorker extends AbstractClientWorker {
     }
 
     @Override
-    public void disconnectedFromChannel() {
-        channel.close();
-    }
-
-    @Override
     public void acceptPacket(Packet packet) {
 
         ServerContext context = ServerContext.getInstance();

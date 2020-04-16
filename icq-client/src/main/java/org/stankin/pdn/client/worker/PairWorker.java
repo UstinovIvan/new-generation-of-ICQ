@@ -5,9 +5,11 @@ import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
 import org.stankin.pdn.client.model.ConnectedUser;
 import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet250UserDisconnected;
 import org.stankin.pdn.client.packet.Packet3PairCreate;
 import org.stankin.pdn.client.ui.forms.TabMessageForm;
 
+import javax.swing.*;
 import java.util.UUID;
 
 public class PairWorker implements ServerWorker {
@@ -43,6 +45,20 @@ public class PairWorker implements ServerWorker {
     @Override
     public void disconnectedFromChannel() {
 
+    }
+
+    void removeUser(Packet packet) {
+        Packet250UserDisconnected userDisconnected = (Packet250UserDisconnected) packet;
+        ConnectedUser user = AppContext.getInstance().getConnectionList()
+                .getOrDefault(userDisconnected.getUsername(), null);
+
+        if (user != null) {
+            JTabbedPane tabbedPane = (JTabbedPane) user.getUserTab().getMainPanel().getParent();
+            tabbedPane.remove(user.getUserTab().getMainPanel());
+
+            AppContext.getInstance().getConnectionList().remove(userDisconnected.getUsername());
+            handler.getUi().showError("Пользователь " + userDisconnected.getUsername() + " отключился");
+        }
     }
 
     @Override

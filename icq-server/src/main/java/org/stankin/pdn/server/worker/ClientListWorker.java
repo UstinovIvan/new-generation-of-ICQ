@@ -17,12 +17,6 @@ public class ClientListWorker extends AbstractClientWorker {
     }
 
     @Override
-    public void disconnectedFromChannel() {
-        ServerContext.getInstance().removeClient(client);
-        channel.close();
-    }
-
-    @Override
     public void acceptPacket(Packet packet) {
         Packet2UsersListResponse clientListPacket = new Packet2UsersListResponse();
 

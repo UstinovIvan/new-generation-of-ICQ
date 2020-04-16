@@ -37,6 +37,8 @@ public abstract class Packet {
                 return new Packet3PairCreate();
             case 50:
                 return new Packet5Message();
+            case 250:
+                return new Packet250UserDisconnected();
             case 255:
                 return new Packet255Disconnect();
             default:

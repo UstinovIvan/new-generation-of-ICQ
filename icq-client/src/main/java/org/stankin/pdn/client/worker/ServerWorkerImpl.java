@@ -45,6 +45,11 @@ public class ServerWorkerImpl implements ServerWorker {
             }
             if (packet.getID() == 50) {
                 this.messageWorker.acceptPacket(packet);
+                return;
+            }
+
+            if (packet.getID() == 250) {
+                this.pairWorker.removeUser(packet);
             }
 
         } else {
