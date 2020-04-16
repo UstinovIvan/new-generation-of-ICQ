@@ -3,6 +3,7 @@ package org.stankin.pdn.client.packet;
 import org.jboss.netty.buffer.ChannelBuffer;
 
 import java.io.*;
+import java.nio.file.Files;
 
 public class Packet5File extends TransmittablePacket {
 
@@ -14,22 +15,20 @@ public class Packet5File extends TransmittablePacket {
     public void get(ChannelBuffer buffer) {
         super.get(buffer);
 
-        int nameLength = buffer.readShort();
-        String filename = readBuffer(nameLength, buffer);
+        int length = buffer.readShort();
+        String filename = readBuffer(length, buffer);
 
-        byte[] fileBuffer = new byte[4096];
-        file = new File(filename);
-        try(OutputStream fos = new FileOutputStream(file);
-            OutputStream bos = new BufferedOutputStream(fos)) {
+        length = buffer.readInt();
+        try {
+            file = new File(filename);
 
-            int readInt = 0;
-            while ((readInt = buffer.readInt()) != -1) {
-                //bos.write(buffer.readInt());
-                fos.write(fileBuffer, 0, readInt);
-            }
+            byte[] fileBytes = new byte[length];
+            buffer.readBytes(fileBytes);
+            Files.write(file.toPath(), fileBytes);
         } catch (IOException e) {
-            System.out.println("Ошибка получения файла " + filename);
+            System.out.println("Ошибка получения файла");
         }
+
     }
 
     @Override
@@ -38,17 +37,15 @@ public class Packet5File extends TransmittablePacket {
 
         writeBuffer(file.getName(), buffer);
 
-        try (InputStream ios = new FileInputStream(file)) {
-            byte[] fileBuffer = new byte[4096];
-            int read = 0;
-            while ((read = ios.read(fileBuffer)) != -1) {
-                buffer.writeInt(read);
-            }
+        try {
+            byte[] fileBytes = Files.readAllBytes(file.toPath());
+            buffer.writeInt(fileBytes.length);
+            buffer.writeBytes(fileBytes);
 
         } catch (IOException e) {
-            System.out.println("Ошибка отправки файла " + file.getName());
+            System.out.println("Ошибка при передаче файла");
         }
-        buffer.writeInt(-1);
+
     }
 
     public File getFile() {

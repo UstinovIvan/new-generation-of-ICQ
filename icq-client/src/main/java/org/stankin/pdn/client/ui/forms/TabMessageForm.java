@@ -11,7 +11,6 @@ public class TabMessageForm extends JPanel {
     private JTextField textField1;
     private JButton fileButton;
     private JButton sendButton;
-    private JButton fileAttachButton;
     private JPanel bottomPanel;
     private JTextArea textArea;
     private JScrollPane scrollPane;
@@ -35,14 +34,13 @@ public class TabMessageForm extends JPanel {
         return sendButton;
     }
 
-    public JButton getFileAttachButton() {
-        return fileAttachButton;
-    }
-
     public JTextArea getTextArea() {
         return textArea;
     }
 
+    public JButton getFileButton() {
+        return fileButton;
+    }
 
     public static void main(String[] args) {
         MainDialogueForm mainDialogueForm = new MainDialogueForm();

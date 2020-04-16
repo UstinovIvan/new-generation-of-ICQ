@@ -4,6 +4,7 @@ import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
 import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet5File;
 import org.stankin.pdn.client.packet.Packet5Message;
 
 public class MessageWorker implements ServerWorker {
@@ -23,6 +24,11 @@ public class MessageWorker implements ServerWorker {
 
     @Override
     public void acceptPacket(Packet packet) {
+        if (packet.getID() == 51) {
+            acceptFile((Packet5File) packet);
+            return;
+        }
+
         Packet5Message messagePacket = (Packet5Message) packet;
         String decryptedMessage = decryptMessage(messagePacket.getMessage());
 
@@ -33,11 +39,27 @@ public class MessageWorker implements ServerWorker {
 
     @Override
     public void sendPacket(Packet packet) {
+        channel.write(packet);
+    }
+
+    void sendMessage(Packet packet) {
         Packet5Message messagePacket = (Packet5Message) packet;
         String encryptedMessage = encryptMessage(messagePacket.getMessage());
         messagePacket.setMessage(encryptedMessage);
 
-        channel.write(messagePacket);
+        sendPacket(messagePacket);
+    }
+
+    void sendFile(Packet packet) {
+        //TODO: реализовать шифрование
+        sendPacket(packet);
+    }
+
+    private void acceptFile(Packet5File packet5File) {
+        AppContext.getInstance().getConnectionList()
+                .get(packet5File.getFrom()).getUserTab().getTextArea()
+                .append("\n" + packet5File.getFrom() + " прислал файл. Он находится здесь: "
+                        + packet5File.getFile().getAbsolutePath());
     }
 
     //TODO: Заглушки. Реализовать

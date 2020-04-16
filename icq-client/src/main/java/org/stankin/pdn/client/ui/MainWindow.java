@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.List;
 
 public class MainWindow extends JFrame {
@@ -123,6 +124,23 @@ public class MainWindow extends JFrame {
 
             tabPanel.getTextArea().append("\nВы: " + str);
             tabPanel.getTextField1().setText("");
+        });
+        tabPanel.getFileButton().addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                System.out.println("Выбран файл " + file);
+
+                Packet5File filePacket = new Packet5File().withFile(file);
+                filePacket.setTo(tabPanel.getName());
+                worker.sendPacket(filePacket);
+
+                tabPanel.getTextArea().append("\nВы отправили файл " + file.getAbsolutePath());
+            } else {
+                System.out.println("Выбор файла отменен");
+            }
         });
         mainDialogueForm.getTabbedPane1().addTab(username, tabPanel.getMainPanel());
 

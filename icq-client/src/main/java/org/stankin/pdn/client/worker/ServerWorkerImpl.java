@@ -43,7 +43,7 @@ public class ServerWorkerImpl implements ServerWorker {
                 this.pairWorker.acceptPacket(packet);
                 return;
             }
-            if (packet.getID() == 50) {
+            if (packet.getID() == 50 || packet.getID() == 51) {
                 this.messageWorker.acceptPacket(packet);
                 return;
             }
@@ -65,7 +65,11 @@ public class ServerWorkerImpl implements ServerWorker {
             return;
         }
         if (packet.getID() == 50) {
-            messageWorker.sendPacket(packet);
+            messageWorker.sendMessage(packet);
+            return;
+        }
+        if (packet.getID() == 51) {
+            messageWorker.sendFile(packet);
             return;
         }
 
