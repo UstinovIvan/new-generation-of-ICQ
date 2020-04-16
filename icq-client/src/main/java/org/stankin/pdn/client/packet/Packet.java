@@ -35,7 +35,7 @@ public abstract class Packet {
                 return new Packet2UsersListResponse();
             case 31:
                 return new Packet3PairCreate();
-            case 5:
+            case 50:
                 return new Packet5Message();
             case 255:
                 return new Packet255Disconnect();

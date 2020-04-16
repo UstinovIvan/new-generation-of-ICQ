@@ -4,7 +4,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 public class Packet5Message extends TransmittablePacket {
 
-    private final int ID = 5;
+    private final int ID = 50;
 
     private String message;
 
