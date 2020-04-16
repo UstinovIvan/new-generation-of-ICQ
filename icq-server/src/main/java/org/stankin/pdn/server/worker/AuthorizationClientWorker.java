@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AuthorizationClientWorker extends AbstractClientWorker {
 
     public AuthorizationClientWorker(ClientHandler handler, Channel channel) {
-        super(handler, channel);
+        super(handler, channel, null);
     }
 
     @Override

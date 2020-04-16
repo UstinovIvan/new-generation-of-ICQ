@@ -12,11 +12,8 @@ import java.util.List;
 
 public class ClientListWorker extends AbstractClientWorker {
 
-    private Client client;
-
     ClientListWorker(ClientHandler handler, Channel channel, Client client) {
-        super(handler, channel);
-        this.client = client;
+        super(handler, channel, client);
     }
 
     @Override

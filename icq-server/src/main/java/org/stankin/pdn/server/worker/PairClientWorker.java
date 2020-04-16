@@ -9,11 +9,9 @@ import org.stankin.pdn.server.model.Client;
 public class PairClientWorker extends AbstractClientWorker {
 
     private ClientListWorker clientListWorker;
-    private Client client;
 
     PairClientWorker(ClientHandler handler, Channel channel, Client client, ClientListWorker clientListWorker) {
-        super(handler, channel);
-        this.client = client;
+        super(handler, channel, client);
         this.clientListWorker = clientListWorker;
     }
 
