@@ -1,12 +1,25 @@
 package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.stankin.pdn.client.worker.PairWorker;
 
-public class Packet3PairCreate extends TransmittablePacket{
+/**
+ * Запрос, отправляемый другому пользователю, для создания пары
+ */
+public class Packet3PairCreate extends TransmittablePacket {
 
     private final int ID = 31;
 
+    /**
+     * Личный публичный ключ
+     */
     private String publicKey;
+
+    /**
+     * Требуется ответ на этот пакет
+     *
+     * @see PairWorker#acceptPacket
+     */
     private short needAnswer;
 
     @Override

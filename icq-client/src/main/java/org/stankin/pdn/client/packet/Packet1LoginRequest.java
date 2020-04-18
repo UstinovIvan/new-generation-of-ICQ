@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет, отправляемый на сервер с запросом авторизации
+ */
 public class Packet1LoginRequest extends Packet {
 
     private final int ID = 1;
@@ -36,7 +39,7 @@ public class Packet1LoginRequest extends Packet {
     public void send(ChannelBuffer buffer) {
         int loginLength = login.length();
         int passwordLength = password.length();
-        
+
         buffer.writeShort(loginLength);
         for (int i = 0; i < loginLength; i++) {
             buffer.writeChar(login.charAt(i));

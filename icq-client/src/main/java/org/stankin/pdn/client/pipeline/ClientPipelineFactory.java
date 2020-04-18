@@ -8,6 +8,9 @@ import org.stankin.pdn.client.coder.PacketFrameEncoder;
 import org.stankin.pdn.client.handler.ServerHandler;
 import org.stankin.pdn.client.ui.MainWindow;
 
+/**
+ * Создание обработчика для пакетов и команд от сервера
+ */
 public class ClientPipelineFactory implements ChannelPipelineFactory {
 
     private MainWindow ui;
@@ -24,7 +27,7 @@ public class ClientPipelineFactory implements ChannelPipelineFactory {
         ChannelPipeline p = Channels.pipeline();
         p.addLast("encoder", encoder);
         p.addLast("decoder", decoder);
-        p.addLast("logic",   new ServerHandler(ui));
+        p.addLast("logic", new ServerHandler(ui));
         return p;
     }
 }

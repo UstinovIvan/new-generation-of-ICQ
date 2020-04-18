@@ -5,6 +5,9 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Ответ сервера на запрос списка пользователей
+ */
 public class Packet2UsersListResponse extends Packet {
 
     private final int ID = 21;
@@ -19,7 +22,7 @@ public class Packet2UsersListResponse extends Packet {
         while (usersCount != 0) {
             int length = buffer.readShort();
             builder = new StringBuilder();
-            for (int i = 0; i < length; i ++) {
+            for (int i = 0; i < length; i++) {
                 builder.append(buffer.readChar());
             }
             usersList.add(builder.toString());

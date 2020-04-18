@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет, отправляемый сервером всем парам клиента, который отключился от сервера
+ */
 public class Packet250UserDisconnected extends Packet {
 
     private final int ID = 250;

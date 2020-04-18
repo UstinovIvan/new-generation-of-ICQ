@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет для клиента, содержащий сообщение
+ */
 public class Packet5Message extends TransmittablePacket {
 
     private final int ID = 50;

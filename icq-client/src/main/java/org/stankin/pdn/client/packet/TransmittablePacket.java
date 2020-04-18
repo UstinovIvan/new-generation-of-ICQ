@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Базовый класс для всех пересылаемых пакетов
+ */
 public abstract class TransmittablePacket extends Packet implements Transmittable {
 
     private String from;

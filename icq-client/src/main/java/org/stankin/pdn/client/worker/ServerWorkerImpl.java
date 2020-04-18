@@ -1,11 +1,16 @@
 package org.stankin.pdn.client.worker;
 
+import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
-import org.stankin.pdn.client.packet.*;
+import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet1LoginFailed;
+import org.stankin.pdn.client.packet.Packet2UsersListRequest;
+import org.stankin.pdn.client.packet.Packet2UsersListResponse;
 
-import org.jboss.netty.channel.Channel;
-
+/**
+ * Базовая реализация обработчика {@link ServerWorker}
+ */
 public class ServerWorkerImpl implements ServerWorker {
 
     protected ServerHandler handler;

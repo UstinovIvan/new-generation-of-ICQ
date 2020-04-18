@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет, возвращаемый сервером при ошибке авторизации
+ */
 public class Packet1LoginFailed extends Packet {
 
     private final int ID = 12;

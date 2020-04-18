@@ -2,6 +2,9 @@ package org.stankin.pdn.client.model;
 
 import org.stankin.pdn.client.ui.forms.TabMessageForm;
 
+/**
+ * Модель пользователя, с которым установлено соединение
+ */
 public class ConnectedUser {
 
     private String publicKey;

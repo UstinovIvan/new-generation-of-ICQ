@@ -14,6 +14,13 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Класс обработки данных со всех форм
+ *
+ * @Deprecated - Необходимо разделить создание форм и передавать данные с формы на бэкенд через шлюз
+ */
+
+@Deprecated
 public class MainWindow extends JFrame {
 
     private final ClientApp clientApp;
@@ -89,7 +96,7 @@ public class MainWindow extends JFrame {
     }
 
     public void showError(String error) {
-        int widthFrame = error.length() > 10 ? error.length()*10 : 200;
+        int widthFrame = error.length() > 10 ? error.length() * 10 : 200;
 
         ErrorForm frame = new ErrorForm();
         setEnabled(false);

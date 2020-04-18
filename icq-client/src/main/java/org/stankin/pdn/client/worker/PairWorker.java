@@ -12,6 +12,9 @@ import org.stankin.pdn.client.ui.forms.TabMessageForm;
 import javax.swing.*;
 import java.util.UUID;
 
+/**
+ * Обработчик запросов на создание пары
+ */
 public class PairWorker implements ServerWorker {
 
     protected ServerHandler handler;
@@ -30,9 +33,9 @@ public class PairWorker implements ServerWorker {
         if (responsePacket.getNeedAnswer() == 1) {
             this.sendPacket(
                     new Packet3PairCreate()
-                    .withTo(responsePacket.getFrom())
-                    .withPublicKey(generatePublicKey())
-                    .withNeedAnswer((short) -1)
+                            .withTo(responsePacket.getFrom())
+                            .withPublicKey(generatePublicKey())
+                            .withNeedAnswer((short) -1)
             );
 
         } else {
@@ -47,6 +50,12 @@ public class PairWorker implements ServerWorker {
 
     }
 
+    /**
+     * Удаление пользователя из локального контекста, а так же закрытие связанных с ним вкладок,
+     * если тот отключился от сервера
+     *
+     * @param packet - {@link Packet250UserDisconnected}
+     */
     void removeUser(Packet packet) {
         Packet250UserDisconnected userDisconnected = (Packet250UserDisconnected) packet;
         ConnectedUser user = AppContext.getInstance().getConnectionList()
@@ -72,6 +81,11 @@ public class PairWorker implements ServerWorker {
         channel.write(packet);
     }
 
+    /**
+     * Заполнение пакета собственным открытым ключом
+     *
+     * @param packet - {@link Packet3PairCreate}
+     */
     void fillSecurityAndSend(Packet packet) {
         sendPacket(((Packet3PairCreate) packet)
                 .withPublicKey(generatePublicKey())
@@ -82,6 +96,12 @@ public class PairWorker implements ServerWorker {
         return AppContext.getInstance().getConnectionList().containsKey(user);
     }
 
+    /**
+     * Добавление в контекст, а так же на UI пользователя, с которым была создана пара и
+     * произведен обмен открытыми ключами
+     *
+     * @param packet - {@link Packet3PairCreate}
+     */
     private void addNewConnect(Packet3PairCreate packet) {
         TabMessageForm tabForm = handler.getUi().addUserTab(packet.getFrom());
         AppContext.getInstance().getConnectionList().put(packet.getFrom(),
@@ -90,10 +110,10 @@ public class PairWorker implements ServerWorker {
         System.out.println("Foreign key = " + packet.getPublicKey());
 
     }
-    
+
     //TODO: заглушка. Реализовать
     private String generatePublicKey() {
-        String key =  UUID.randomUUID().toString();
+        String key = UUID.randomUUID().toString();
         System.out.println("My key = " + key);
         return key;
     }

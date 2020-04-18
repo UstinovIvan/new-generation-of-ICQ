@@ -2,6 +2,9 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет, отправляемый на сервер для запроса списка пользователей
+ */
 public class Packet2UsersListRequest extends Packet {
 
     private final int ID = 20;

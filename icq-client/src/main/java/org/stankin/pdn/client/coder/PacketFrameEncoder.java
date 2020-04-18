@@ -7,6 +7,9 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.oneone.OneToOneEncoder;
 import org.stankin.pdn.client.packet.Packet;
 
+/**
+ * Обработчик исходящих пакетов
+ */
 public class PacketFrameEncoder extends OneToOneEncoder {
 
     @Override
@@ -17,12 +20,10 @@ public class PacketFrameEncoder extends OneToOneEncoder {
 
         Packet p = (Packet) msg;
 
-        // Создаём динамический буфер для записи в него данных из пакета. Если Вы точно знаете длину пакета,
-        // Вам не обязательно использовать динамический буфер —
-        // ChannelBuffers предоставляет и буферы фиксированной длинны, они могут быть эффективнее.
+        // Создаём динамический буфер для записи в него данных из пакета
         ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
 
         Packet.write(p, buffer); // Пишем пакет в буфер
-        return buffer; // Возвращаем буфер, который и будет записан в канал
+        return buffer; // Возвращает буфер, который и будет записан в канал
     }
 }

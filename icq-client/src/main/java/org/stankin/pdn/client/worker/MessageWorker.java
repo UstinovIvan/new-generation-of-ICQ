@@ -7,6 +7,9 @@ import org.stankin.pdn.client.packet.Packet;
 import org.stankin.pdn.client.packet.Packet5File;
 import org.stankin.pdn.client.packet.Packet5Message;
 
+/**
+ * Обработчик входящих и исходящих сообщений и файлов
+ */
 public class MessageWorker implements ServerWorker {
 
     protected ServerHandler handler;

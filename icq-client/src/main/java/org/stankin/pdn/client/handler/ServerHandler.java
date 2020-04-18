@@ -6,6 +6,9 @@ import org.stankin.pdn.client.ui.MainWindow;
 import org.stankin.pdn.client.worker.ServerWorker;
 import org.stankin.pdn.client.worker.ServerWorkerImpl;
 
+/**
+ * Обработчик канала с сервером
+ */
 public class ServerHandler extends SimpleChannelUpstreamHandler {
 
     private ServerWorker mainWorker;
@@ -16,6 +19,13 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         this.ui = ui;
     }
 
+    /**
+     * Обработка успешного соединения
+     *
+     * @param ctx - Контекст
+     * @param e   - Событие
+     * @throws Exception - Любое исключение, возникшее в этом обработчике
+     */
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelConnected(ctx, e);
@@ -27,14 +37,28 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         ui.setWorker(mainWorker);
     }
 
+    /**
+     * Получение сообщения
+     *
+     * @param ctx - Контекст
+     * @param e   - Сообщение
+     * @throws Exception - Любое исключение, возникшее в этом обработчике
+     */
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         super.messageReceived(ctx, e);
 
-        mainWorker.acceptPacket((Packet)e.getMessage());
+        mainWorker.acceptPacket((Packet) e.getMessage());
         System.out.println("message from server recieved");
     }
 
+    /**
+     * Обработка исключений
+     *
+     * @param ctx - Контекст
+     * @param e   - Исключение
+     * @throws Exception - Любое исключение, возникшее в этом обработчике
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         super.exceptionCaught(ctx, e);
@@ -49,6 +73,13 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
         System.out.println("exception");
     }
 
+    /**
+     * Обработка разъединения с сервером
+     *
+     * @param ctx - Контекст
+     * @param e   - Событие
+     * @throws Exception - Любое исключение, возникшее в этом обработчике
+     */
     @Override
     public void channelDisconnected(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         super.channelDisconnected(ctx, e);

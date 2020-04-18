@@ -2,10 +2,16 @@ package org.stankin.pdn.client.packet;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+/**
+ * Пакет, отправляемый сервером при успешном прохождении авторизации
+ */
 public class Packet1LoginSuccess extends Packet {
 
     private final int ID = 11;
 
+    /**
+     * Уникальный идентификатор клиента
+     */
     private String uid;
 
     @Override

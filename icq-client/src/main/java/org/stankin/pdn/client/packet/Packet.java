@@ -4,8 +4,18 @@ import org.jboss.netty.buffer.ChannelBuffer;
 
 import java.io.IOException;
 
+/**
+ * Базовый класс для всех пакетов
+ */
 public abstract class Packet {
 
+    /**
+     * Определение валидности пакета
+     *
+     * @param buffer - Входной буфер
+     * @return - Инстанс пакета для обработки
+     * @throws IOException - Проверка валидации
+     */
     public static Packet read(ChannelBuffer buffer) throws IOException {
         int id = buffer.readUnsignedShort(); // Получаем ID пришедшего пакета, чтобы определить, каким классом его читать
         //Определяет, что за пакет - логин, сообщение или что-то еще. Через instanceof
@@ -16,11 +26,23 @@ public abstract class Packet {
         return packet;
     }
 
+    /**
+     * Отправка пакета
+     *
+     * @param packet - Отправляемый пакет
+     * @param buffer - Буфер, через который нужно отправить пакет
+     */
     public static void write(Packet packet, ChannelBuffer buffer) {
         buffer.writeChar(packet.getID()); // Отправляем ID пакета
         packet.send(buffer); // Отправляем данные пакета
     }
 
+    /**
+     * Получение инстанса пакета
+     *
+     * @param id - Уникальный идентификатор пакета
+     * @return - Экземпляр пакета, если найдено совпадение идентификаторов, null если нет
+     */
     private static Packet getPacket(int id) {//TODO: Использовать другой механизм
         switch (id) {
             case 1:
@@ -48,10 +70,24 @@ public abstract class Packet {
         }
     }
 
-    // Функции, которые должен реализовать каждый класс пакета
+    /**
+     * Обработка и считывание данных из буфера в пакет
+     *
+     * @param buffer - Входящий буфер
+     */
     public abstract void get(ChannelBuffer buffer);
 
+    /**
+     * Обработка и записывание данных из пакета в буфер
+     *
+     * @param buffer - Исходящий буфер
+     */
     public abstract void send(ChannelBuffer buffer);
 
+    /**
+     * Получение уникального идентификатора пакета
+     *
+     * @return - ID пакета
+     */
     public abstract int getID();
 }

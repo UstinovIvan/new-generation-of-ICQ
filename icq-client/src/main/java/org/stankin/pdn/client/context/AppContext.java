@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Контекст клиента
+ */
 public class AppContext {
 
     private static AppContext instance;

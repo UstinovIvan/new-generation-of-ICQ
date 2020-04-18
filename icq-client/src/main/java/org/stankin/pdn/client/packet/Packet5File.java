@@ -5,6 +5,9 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import java.io.*;
 import java.nio.file.Files;
 
+/**
+ * Пакет для клиента, содержащий файл
+ */
 public class Packet5File extends TransmittablePacket {
 
     private final int ID = 51;
