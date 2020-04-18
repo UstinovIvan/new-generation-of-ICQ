@@ -12,6 +12,7 @@
     <modules>
         <module>icq-server</module>
         <module>icq-client</module>
+        <module>crypto1</module>
     </modules>
 
     <properties>
@@ -39,6 +40,12 @@
                 <groupId>com.intellij</groupId>
                 <artifactId>forms_rt</artifactId>
                 <version>7.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>1.65</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
