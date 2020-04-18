@@ -7,6 +7,9 @@ import org.stankin.pdn.server.coder.PacketFrameDecoder;
 import org.stankin.pdn.server.coder.PacketFrameEncoder;
 import org.stankin.pdn.server.handler.ClientHandler;
 
+/**
+ * Создание обработчика для пакетов от клиента
+ */
 public class ServerPipelineFactory implements ChannelPipelineFactory {
 
     @Override

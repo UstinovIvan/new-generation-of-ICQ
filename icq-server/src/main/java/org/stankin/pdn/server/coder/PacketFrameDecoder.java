@@ -8,6 +8,9 @@ import org.jboss.netty.handler.codec.replay.ReplayingDecoder;
 import org.jboss.netty.handler.codec.replay.VoidEnum;
 import org.stankin.pdn.client.packet.Packet;
 
+/**
+ * Обработчик входящих пакетов
+ */
 public class PacketFrameDecoder extends ReplayingDecoder<VoidEnum> {
 
     @Override

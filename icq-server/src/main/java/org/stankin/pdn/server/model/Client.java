@@ -8,6 +8,9 @@ import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Модель пользователя, подключенного к серверу
+ */
 public class Client {
 
     private String name;

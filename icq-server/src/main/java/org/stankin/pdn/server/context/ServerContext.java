@@ -4,6 +4,9 @@ import org.stankin.pdn.server.model.Client;
 
 import java.util.*;
 
+/**
+ * Контекст сервера
+ */
 public class ServerContext {
 
     private static ServerContext instance;
