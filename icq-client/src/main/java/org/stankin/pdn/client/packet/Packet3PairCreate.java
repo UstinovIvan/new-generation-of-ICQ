@@ -3,6 +3,12 @@ package org.stankin.pdn.client.packet;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.stankin.pdn.client.worker.PairWorker;
 
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
 /**
  * Запрос, отправляемый другому пользователю, для создания пары
  */
@@ -13,7 +19,7 @@ public class Packet3PairCreate extends TransmittablePacket {
     /**
      * Личный публичный ключ
      */
-    private String publicKey;
+    private PublicKey publicKey;
 
     /**
      * Требуется ответ на этот пакет
@@ -29,7 +35,14 @@ public class Packet3PairCreate extends TransmittablePacket {
         needAnswer = buffer.readShort();
 
         int keyLength = buffer.readShort();
-        this.publicKey = readBuffer(keyLength, buffer);
+        byte[] byteKey = new byte[keyLength];
+        buffer.readBytes(byteKey);
+        try {
+            this.publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(byteKey));
+        } catch (Exception e) {
+            System.out.println("Ошибка получения ключа: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -37,7 +50,8 @@ public class Packet3PairCreate extends TransmittablePacket {
         super.send(buffer);
 
         buffer.writeShort(needAnswer);
-        writeBuffer(publicKey, buffer);
+        buffer.writeShort(publicKey.getEncoded().length);
+        buffer.writeBytes(publicKey.getEncoded());
     }
 
     @Override
@@ -45,15 +59,15 @@ public class Packet3PairCreate extends TransmittablePacket {
         return this.ID;
     }
 
-    public String getPublicKey() {
+    public PublicKey getPublicKey() {
         return publicKey;
     }
 
-    public void setPublicKey(String publicKey) {
+    public void setPublicKey(PublicKey publicKey) {
         this.publicKey = publicKey;
     }
 
-    public Packet3PairCreate withPublicKey(String publicKey) {
+    public Packet3PairCreate withPublicKey(PublicKey publicKey) {
         this.publicKey = publicKey;
         return this;
     }

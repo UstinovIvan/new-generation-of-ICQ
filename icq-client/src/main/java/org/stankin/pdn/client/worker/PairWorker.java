@@ -10,6 +10,7 @@ import org.stankin.pdn.client.packet.Packet3PairCreate;
 import org.stankin.pdn.client.ui.forms.TabMessageForm;
 
 import javax.swing.*;
+import java.security.PublicKey;
 import java.util.UUID;
 
 /**
@@ -112,9 +113,7 @@ public class PairWorker implements ServerWorker {
     }
 
     //TODO: заглушка. Реализовать
-    private String generatePublicKey() {
-        String key = UUID.randomUUID().toString();
-        System.out.println("My key = " + key);
-        return key;
+    private PublicKey generatePublicKey() {
+        return AppContext.getInstance().getCryptoApi().getPublicKey();
     }
 }
