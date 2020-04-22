@@ -1,6 +1,8 @@
 package org.stankin.pdn.client.context;
 
 import org.stankin.pdn.client.model.ConnectedUser;
+import org.stankin.pdn.crypto.api.IcqCryptoApi;
+import org.stankin.pdn.crypto.api.IcqCryptoApiImpl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,8 @@ public class AppContext {
     private List<String> onlineUsers;
 
     private Map<String, ConnectedUser> connectionList = new HashMap<>();
+
+    private IcqCryptoApi cryptoApi = new IcqCryptoApiImpl();
 
     private AppContext() {
 
@@ -43,6 +47,9 @@ public class AppContext {
         return connectionList;
     }
 
+    public IcqCryptoApi getCryptoApi() {
+        return cryptoApi;
+    }
 
     public String getUsername() {
         return username;
