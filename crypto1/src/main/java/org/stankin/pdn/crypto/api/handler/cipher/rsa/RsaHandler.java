@@ -1,13 +1,11 @@
-package org.stankin.pdn.crypto.api.handler.rsa;
+package org.stankin.pdn.crypto.api.handler.cipher.rsa;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.stankin.pdn.crypto.exception.InitHandlerException;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
+import java.security.*;
 
 public class RsaHandler {
 
@@ -18,6 +16,7 @@ public class RsaHandler {
     }
 
     public static RsaHandler init() throws InitHandlerException {
+        Security.addProvider(new BouncyCastleProvider());
         RsaHandler handler = new RsaHandler();
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -32,18 +31,38 @@ public class RsaHandler {
         }
     }
 
-    public byte[] encodeData(byte[] data) {
+    public byte[] encodeData(byte[] data, PublicKey publicKey) {
 
+        try {
+            cipher.init(Cipher.PUBLIC_KEY, publicKey);
+
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            System.out.println("Ошибка RSA шифрования " + e.getMessage());
+        }
         return null;
     }
 
-    public byte[] decodeData(byte[] data, PublicKey publicKey) {
+    public byte[] decodeData(byte[] data) {
 
+        try {
+            cipher.init(Cipher.PRIVATE_KEY, keyPair.getPrivate());
+
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            System.out.println("Ошибка RSA дешифрования " + e.getMessage());
+        }
         return null;
     }
 
     public PublicKey getPublicKey() {
         return this.keyPair.getPublic();
+    }
+
+    public Signature sign(Signature signature) throws Exception {
+        signature.initSign(keyPair.getPrivate());
+
+        return signature;
     }
 
 }

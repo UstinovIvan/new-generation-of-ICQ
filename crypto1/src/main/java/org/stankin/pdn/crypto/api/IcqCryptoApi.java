@@ -3,12 +3,16 @@ package org.stankin.pdn.crypto.api;
 import org.stankin.pdn.crypto.api.model.EncrytedData;
 import org.stankin.pdn.crypto.exception.InitHandlerException;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.PublicKey;
 
 public interface IcqCryptoApi {
-    <T> EncrytedData<T> encryteMessage(T message);
+    EncrytedData encryteMessage(String message, PublicKey publicKey);
 
-    <T> T decryteData(EncrytedData<T> data, PublicKey publicKey);
+    EncrytedData encryteMessage(File file, PublicKey publicKey) throws IOException;
+
+    <T> T decryteData(EncrytedData data, PublicKey publicKey) throws Exception;
 
     PublicKey getPublicKey();
 

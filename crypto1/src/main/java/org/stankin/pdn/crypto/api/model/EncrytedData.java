@@ -1,12 +1,13 @@
 package org.stankin.pdn.crypto.api.model;
 
-import java.io.File;
+import java.util.Arrays;
 
-public class EncrytedData<T> {
+public class EncrytedData {
 
     private byte[] signature;
     private byte[] key;
-    private T data;
+    private byte[] data;
+    private String name;
 
 
     public byte[] getSignature() {
@@ -25,11 +26,28 @@ public class EncrytedData<T> {
         this.key = key;
     }
 
-    public T getData() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "EncrytedData{" +
+                "signature=" + Arrays.toString(signature) +
+                ", key=" + Arrays.toString(key) +
+                ", data=" + Arrays.toString(data) +
+                '}';
     }
 }

@@ -23,6 +23,12 @@
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.stankin.pdn</groupId>
+            <artifactId>crypto1</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
