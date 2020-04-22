@@ -125,9 +125,7 @@ public class MainWindow extends JFrame {
         tabPanel.getSendButton().addActionListener(e -> {
             String str = tabPanel.getTextField1().getText();
 
-            Packet5Message messagePacket = new Packet5Message().withMessage(str);
-            messagePacket.setTo(tabPanel.getName());
-            worker.sendPacket(messagePacket);
+            worker.sendMessage(str, tabPanel.getName());
 
             tabPanel.getTextArea().append("\nВы: " + str);
             tabPanel.getTextField1().setText("");
@@ -140,9 +138,7 @@ public class MainWindow extends JFrame {
                 File file = fc.getSelectedFile();
                 System.out.println("Выбран файл " + file);
 
-                Packet5File filePacket = new Packet5File().withFile(file);
-                filePacket.setTo(tabPanel.getName());
-                worker.sendPacket(filePacket);
+                worker.sendFile(file, tabPanel.getName());
 
                 tabPanel.getTextArea().append("\nВы отправили файл " + file.getAbsolutePath());
             } else {

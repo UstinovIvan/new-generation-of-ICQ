@@ -5,41 +5,23 @@ import org.jboss.netty.buffer.ChannelBuffer;
 /**
  * Пакет для клиента, содержащий сообщение
  */
-public class Packet5Message extends TransmittablePacket {
+public class Packet5Message extends Packet5EncrytedData {
 
     private final int ID = 50;
 
-    private String message;
+    @Override
+    public void get(ChannelBuffer buffer) {
+        super.get(buffer);
+    }
+
+    @Override
+    public void send(ChannelBuffer buffer) {
+        super.send(buffer);
+    }
 
     @Override
     public int getID() {
         return this.ID;
     }
 
-    @Override
-    public void get(ChannelBuffer buffer) {
-        super.get(buffer);
-
-        int length = buffer.readShort();
-        message = readBuffer(length, buffer);
-    }
-
-    @Override
-    public void send(ChannelBuffer buffer) {
-        super.send(buffer);
-        writeBuffer(message, buffer);
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Packet5Message withMessage(String message) {
-        this.message = message;
-        return this;
-    }
 }

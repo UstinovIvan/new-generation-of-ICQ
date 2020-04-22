@@ -4,8 +4,14 @@ import org.jboss.netty.channel.Channel;
 import org.stankin.pdn.client.context.AppContext;
 import org.stankin.pdn.client.handler.ServerHandler;
 import org.stankin.pdn.client.packet.Packet;
+import org.stankin.pdn.client.packet.Packet5EncrytedData;
 import org.stankin.pdn.client.packet.Packet5File;
 import org.stankin.pdn.client.packet.Packet5Message;
+import org.stankin.pdn.crypto.api.model.EncrytedData;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.PublicKey;
 
 /**
  * Обработчик входящих и исходящих сообщений и файлов
@@ -14,6 +20,8 @@ public class MessageWorker implements ServerWorker {
 
     protected ServerHandler handler;
     protected Channel channel;
+
+    private AppContext context = AppContext.getInstance();
 
     MessageWorker(ServerHandler handler, Channel channel) {
         this.handler = handler;
@@ -33,9 +41,11 @@ public class MessageWorker implements ServerWorker {
         }
 
         Packet5Message messagePacket = (Packet5Message) packet;
-        String decryptedMessage = decryptMessage(messagePacket.getMessage());
+        String decryptedMessage = decryptMessage(messagePacket.getMessage(),
+                context.getConnectionList().get(((Packet5Message) packet).getFrom()).getPublicKey(),
+                String.class);
 
-        AppContext.getInstance().getConnectionList()
+        context.getConnectionList()
                 .get(messagePacket.getFrom()).getUserTab().getTextArea()
                 .append("\n" + messagePacket.getFrom() + ": " + decryptedMessage);
     }
@@ -45,32 +55,65 @@ public class MessageWorker implements ServerWorker {
         channel.write(packet);
     }
 
-    void sendMessage(Packet packet) {
-        Packet5Message messagePacket = (Packet5Message) packet;
-        String encryptedMessage = encryptMessage(messagePacket.getMessage());
-        messagePacket.setMessage(encryptedMessage);
+    @Override
+    public void sendMessage(String message, String to) {
+        Packet5EncrytedData messagePacket = new Packet5Message();
+        messagePacket.setMessage(encryptMessage(message, context
+                .getConnectionList().get(to).getPublicKey()));
+        messagePacket.setTo(to);
 
         sendPacket(messagePacket);
     }
 
-    void sendFile(Packet packet) {
-        //TODO: реализовать шифрование
-        sendPacket(packet);
+    @Override
+    public void sendFile(File file, String to) {
+        Packet5EncrytedData messagePacket = new Packet5File();
+        messagePacket.setTo(to);
+        EncrytedData encrytedData = encryptFile(file, context.getConnectionList().get(to).getPublicKey());
+
+        if (encrytedData != null) {
+            messagePacket.setMessage(encrytedData);
+            sendPacket(messagePacket);
+        }
     }
 
-    private void acceptFile(Packet5File packet5File) {
-        AppContext.getInstance().getConnectionList()
-                .get(packet5File.getFrom()).getUserTab().getTextArea()
-                .append("\n" + packet5File.getFrom() + " прислал файл. Он находится здесь: "
-                        + packet5File.getFile().getAbsolutePath());
+    private void acceptFile(Packet5EncrytedData packet) {
+        File file = decryptMessage(packet.getMessage(), context.getConnectionList()
+                .get(packet.getFrom()).getPublicKey(), File.class);
+
+        context.getConnectionList()
+                .get(packet.getFrom()).getUserTab().getTextArea()
+                .append("\n" + packet.getFrom() + " прислал файл. Он находится здесь: "
+                        + file.getAbsolutePath());
     }
 
-    //TODO: Заглушки. Реализовать
-    private String encryptMessage(String message) {
-        return message;
+
+    private EncrytedData encryptMessage(String message, PublicKey publicKey) {
+        return context.getCryptoApi().encryteMessage(message, publicKey);
     }
 
-    private String decryptMessage(String message) {
-        return message;
+    private EncrytedData encryptFile(File file, PublicKey publicKey) {
+        try {
+            return context.getCryptoApi().encryteMessage(file, publicKey);
+        } catch (IOException e) {
+            this.handler.getUi().showError("Ошибка при отправке файла: " + e.getMessage()
+                    + "\nОбратитесь к разработчику");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private <T> T decryptMessage(EncrytedData message, PublicKey publicKey, Class<T> clazz) {
+        T decryteMessage = null;
+        try {
+            decryteMessage = clazz.cast(context.getCryptoApi().decryteData(message, publicKey));
+        } catch (Exception e) {
+            handler.getUi().showError("Ошибка при расшифровке сообщения: " + e.getMessage() +
+                    "\nОбратитесь к разработчику");
+            e.printStackTrace();
+        }
+
+        return decryteMessage;
     }
 }

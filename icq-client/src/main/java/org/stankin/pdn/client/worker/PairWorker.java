@@ -10,6 +10,7 @@ import org.stankin.pdn.client.packet.Packet3PairCreate;
 import org.stankin.pdn.client.ui.forms.TabMessageForm;
 
 import javax.swing.*;
+import java.io.File;
 import java.security.PublicKey;
 import java.util.UUID;
 
@@ -112,8 +113,17 @@ public class PairWorker implements ServerWorker {
 
     }
 
-    //TODO: заглушка. Реализовать
     private PublicKey generatePublicKey() {
         return AppContext.getInstance().getCryptoApi().getPublicKey();
+    }
+
+    @Override
+    public void sendMessage(String message, String to) {
+
+    }
+
+    @Override
+    public void sendFile(File file, String to) {
+
     }
 }

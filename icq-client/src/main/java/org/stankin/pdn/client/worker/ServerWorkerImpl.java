@@ -8,6 +8,8 @@ import org.stankin.pdn.client.packet.Packet1LoginFailed;
 import org.stankin.pdn.client.packet.Packet2UsersListRequest;
 import org.stankin.pdn.client.packet.Packet2UsersListResponse;
 
+import java.io.File;
+
 /**
  * Базовая реализация обработчика {@link ServerWorker}
  */
@@ -69,16 +71,18 @@ public class ServerWorkerImpl implements ServerWorker {
             pairWorker.fillSecurityAndSend(packet);
             return;
         }
-        if (packet.getID() == 50) {
-            messageWorker.sendMessage(packet);
-            return;
-        }
-        if (packet.getID() == 51) {
-            messageWorker.sendFile(packet);
-            return;
-        }
 
         channel.write(packet);
+    }
+
+    @Override
+    public void sendMessage(String message, String to) {
+        messageWorker.sendMessage(message, to);
+    }
+
+    @Override
+    public void sendFile(File file, String to) {
+        messageWorker.sendFile(file, to);
     }
 
     private void checkAuthorization(Packet packet) {
